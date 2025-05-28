@@ -28,9 +28,7 @@
                         <!-- RD Navbar Brand-->
                         <div class="rd-navbar-brand">
                             <a class="brand" href="{{ route('home') }}">
-                                <img class="brand-logo-dark" src="{{ asset('images/logo-default-306x104.png') }}" alt="{{ config('app.name') }}" width="153" height="52"/>
-                                <img class="brand-logo-light" src="{{ asset('images/logo-inverse-306x104.png') }}" alt="{{ config('app.name') }}" width="153" height="52"/>
-                                <img class="brand-logo-white" src="{{ asset('images/logo-white-306x104.png') }}" alt="{{ config('app.name') }}" width="153" height="52"/>
+                                <img class="brand-logo" src="{{ asset('storage/' . $company->logo_path) }}" alt="{{ config('app.name') }}" width="153" height="52"/>
                             </a>
                         </div>
                     </div>
@@ -41,12 +39,16 @@
                         <div class="rd-navbar-aside" id="rd-navbar-aside">
                             <ul class="rd-navbar-aside-list">
                                 <li>
-                                    <span class="icon mdi mdi-map-marker"></span>
-                                    <a href="#">{{ config('site.address', '9 Valley St. Brooklyn, NY 11203') }}</a>
+                                    @if(!empty($company->address))
+                                        <span class="icon mdi mdi-map-marker"></span>
+                                        <a href="#">{{ $company->address }}</a>
+                                    @endif
                                 </li>
                                 <li>
-                                    <span class="icon mdi mdi-phone"></span>
-                                    <a href="tel:{{ config('site.phone', '1-800-346-6277') }}">{{ config('site.phone', '1-800-346-6277') }}</a>
+                                    @if(!empty($company->phone))
+                                        <span class="icon mdi mdi-phone"></span>
+                                        <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>
+                                    @endif
                                 </li>
                             </ul>
                         </div>
@@ -85,9 +87,11 @@
                         <li class="rd-nav-item {{ Request::routeIs('programs*') ? 'active' : '' }}">
                             <a class="rd-nav-link" href="{{ localized_route('programs') }}">{{__('Programs')}}</a>
                             <ul class="rd-menu rd-navbar-dropdown">
-                                <li class="rd-dropdown-item">
-                                    <a class="rd-dropdown-link" href="{{ localized_route('programs.show', 1) }}">{{__('Program Page')}}</a>
-                                </li>
+                                @foreach($skiPrograms as $program)
+                                    <li class="rd-dropdown-item">
+                                        <a class="rd-dropdown-link" href="{{ localized_route('programs.show', ['slug' => $program->getTranslation('slug', app()->getLocale())]) }}">{{ $program->getTranslation('title', app()->getLocale()) }}</a>
+                                    </li>
+                                @endforeach
                             </ul>
                         </li>
                         <li class="rd-nav-item {{ Request::routeIs('gallery') ? 'active' : '' }}">

@@ -65,9 +65,13 @@
                         <li class="rd-nav-item {{ Request::routeIs('programs*') ? 'active' : '' }}">
                             <a class="rd-nav-link" href="{{ localized_route('programs') }}">{{__('Programs')}}</a>
                             <ul class="rd-menu rd-navbar-dropdown">
-                                <li class="rd-dropdown-item">
-                                    <a class="rd-dropdown-link" href="{{ localized_route('programs.show', 1) }}">{{__('Program Page')}}</a>
-                                </li>
+                                @foreach($skiPrograms as $program)
+                                    <li class="rd-dropdown-item">
+                                        <a class="rd-dropdown-link" href="{{ localized_route('programs.show', ['slug' => $program->getTranslation('slug', app()->getLocale())]) }}">
+                                            {{ $program->getTranslation('title', app()->getLocale()) }}
+                                        </a>
+                                    </li>
+                                @endforeach
                             </ul>
                         </li>
                         <li class="rd-nav-item {{ Request::routeIs('gallery') ? 'active' : '' }}">

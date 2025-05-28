@@ -44,7 +44,7 @@
                                             </div>
                                             <div class="camp-listing-detail">
                                                 <span class="icon mdi mdi-account-multiple"></span>
-                                                <span>{{ $camp->capacity }} spots</span>
+                                                <span>{{ $camp->capacity }} {{__('spots')}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -64,7 +64,7 @@
     .camp-listing-card {
         position: relative;
     }
-    
+
     .camp-listing-dates {
         position: absolute;
         top: 15px;
@@ -79,7 +79,7 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         z-index: 2;
     }
-    
+
     .camp-listing-title-row {
         display: flex;
         justify-content: space-between;
@@ -87,7 +87,7 @@
         margin-bottom: 15px;
         gap: 10px;
     }
-    
+
     .camp-listing-age {
         display: flex;
         align-items: center;
@@ -95,44 +95,44 @@
         color: #666;
         white-space: nowrap;
     }
-    
+
     .camp-listing-age .icon {
         font-size: 14px;
         margin-right: 4px;
         color: #2196F3;
     }
-    
+
     .camp-listing-info {
         display: flex;
         justify-content: space-between;
         gap: 15px;
         margin-top: 10px;
     }
-    
+
     .camp-listing-detail {
         display: flex;
         align-items: center;
         font-size: 14px;
         color: #666;
     }
-    
+
     .camp-listing-detail .icon {
         font-size: 16px;
         margin-right: 6px;
         color: #2196F3;
     }
-    
+
     @media (max-width: 767px) {
         .camp-listing-dates {
             font-size: 11px;
             padding: 5px 8px;
         }
-        
+
         .camp-listing-info {
             flex-direction: column;
             gap: 8px;
         }
-        
+
         .camp-listing-detail {
             font-size: 13px;
         }

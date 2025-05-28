@@ -18,7 +18,7 @@
                         <p>{{ __('Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.') }}</p>
                         <p>{{ __('Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.') }}</p>
                     </div>
-                    <a class="button-square btn-md button button-primary mt-lg-40" href="{{ route('contact') }}">{{ __('Book Now') }}</a>
+                    <a class="button-square btn-md button button-primary mt-lg-40" href="{{ localized_route('contact') }}">{{ __('Book Now') }}</a>
                 </div>
                 <div class="col-md-10 col-lg-5">
                     <figure class="figure-1" role="presentation">

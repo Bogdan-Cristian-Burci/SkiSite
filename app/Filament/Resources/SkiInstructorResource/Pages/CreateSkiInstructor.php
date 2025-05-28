@@ -19,7 +19,7 @@ class CreateSkiInstructor extends CreateRecord
     {
         // Handle user creation if instructor_name and instructor_email are provided
         if (!empty($data['instructor_name']) && !empty($data['instructor_email'])) {
-            $user = $this->createInstructorUser($data['instructor_name'], $data['instructor_email']);
+            $user = $this->createInstructorUser($data['instructor_name'], $data['instructor_email'], $data['instructor_phone'] ?? null);
             $data['user_id'] = $user->id;
             $data['slug'] = Str::slug($data['instructor_name']);
         } elseif (!empty($data['user_id'])) {
@@ -30,13 +30,13 @@ class CreateSkiInstructor extends CreateRecord
             throw new \InvalidArgumentException('Either instructor_name and instructor_email must be provided, or an existing user_id must be selected.');
         }
 
-        // Remove instructor_name and instructor_email from data as they don't belong in ski_instructors table
-        unset($data['instructor_name'], $data['instructor_email']);
+        // Remove instructor_name, instructor_email, and instructor_phone from data as they don't belong in ski_instructors table
+        unset($data['instructor_name'], $data['instructor_email'], $data['instructor_phone']);
 
         return $data;
     }
 
-    private function createInstructorUser(string $name, string $email): User
+    private function createInstructorUser(string $name, string $email, ?string $phone = null): User
     {
         // Check if user with this email already exists
         $existingUser = User::where('email', $email)->first();
@@ -49,6 +49,7 @@ class CreateSkiInstructor extends CreateRecord
         $user = User::create([
             'name' => $name,
             'email' => $email,
+            'phone' => $phone,
             'password' => Hash::make($temporaryPassword),
             'must_change_password' => true,
         ]);

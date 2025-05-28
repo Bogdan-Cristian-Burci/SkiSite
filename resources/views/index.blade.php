@@ -230,7 +230,7 @@
                                     </div>
                                     <div class="camp-detail-item">
                                         <span class="icon mdi mdi-account-multiple"></span>
-                                        <span class="camp-detail-text">{{$camp->capacity}} spots</span>
+                                        <span class="camp-detail-text">{{$camp->capacity}} {{__('spots')}}</span>
                                     </div>
                                 </div>
                             </div>

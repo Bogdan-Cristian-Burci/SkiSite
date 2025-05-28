@@ -13,7 +13,18 @@ class EditBlogPost extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\ViewAction::make()
+                ->label('View on Site')
+                ->url(fn (): string => route('blog.show.fallback', $this->record->getTranslation('slug', app()->getLocale())))
+                ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
+            Actions\RestoreAction::make(),
+            Actions\ForceDeleteAction::make(),
         ];
+    }
+    
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }

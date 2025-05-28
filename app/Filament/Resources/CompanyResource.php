@@ -19,40 +19,95 @@ class CompanyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
-    protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationGroup = 'Website';
+
+    protected static ?string $navigationLabel = 'Company Settings';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name.en')
-                    ->label('Name (English)')
-                    ->required(),
-                Forms\Components\TextInput::make('name.ro')
-                    ->label('Name (Romanian)')
-                    ->required(),
-                Forms\Components\TextInput::make('description.en')
-                    ->label('Description (English)')
-                    ->required(),
-                Forms\Components\TextInput::make('description.ro')
-                    ->label('Description (Romanian)')
-                    ->required(),
-                Forms\Components\TextInput::make('address')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('logo_path')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('socials')
-                    ->required(),
+                Forms\Components\Section::make('Basic Information')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('name.en')
+                                    ->label('Name (English)')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('name.ro')
+                                    ->label('Name (Romanian)')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Textarea::make('description.en')
+                                    ->label('Description (English)')
+                                    ->required()
+                                    ->rows(3),
+                                Forms\Components\Textarea::make('description.ro')
+                                    ->label('Description (Romanian)')
+                                    ->required()
+                                    ->rows(3),
+                            ]),
+                        Forms\Components\Textarea::make('address')
+                            ->required()
+                            ->rows(2)
+                            ->maxLength(500),
+                    ]),
+                
+                Forms\Components\Section::make('Contact Information')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('phone')
+                                    ->tel()
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('email')
+                                    ->email()
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                    ]),
+
+                Forms\Components\Section::make('Branding')
+                    ->schema([
+                        Forms\Components\FileUpload::make('logo_path')
+                            ->label('Company Logo')
+                            ->image()
+                            ->directory('company')
+                            ->visibility('public')
+                            ->required(),
+                    ]),
+
+                Forms\Components\Section::make('Social Media')
+                    ->schema([
+                        Forms\Components\Repeater::make('socials')
+                            ->label('Social Media Links')
+                            ->schema([
+                                Forms\Components\Select::make('platform')
+                                    ->options([
+                                        'facebook' => 'Facebook',
+                                        'instagram' => 'Instagram',
+                                        'twitter' => 'Twitter',
+                                        'linkedin' => 'LinkedIn',
+                                        'youtube' => 'YouTube',
+                                        'tiktok' => 'TikTok',
+                                        'website' => 'Website',
+                                    ])
+                                    ->required(),
+                                Forms\Components\TextInput::make('url')
+                                    ->label('URL')
+                                    ->url()
+                                    ->required(),
+                            ])
+                            ->columns(2)
+                            ->collapsible()
+                            ->defaultItems(0)
+                            ->addActionLabel('Add Social Media Link'),
+                    ]),
             ]);
     }
 
@@ -60,16 +115,31 @@ class CompanyResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('logo_path')
+                    ->label('Logo')
+                    ->square()
+                    ->size(50),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('address')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
+                    ->label('Company Name')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('logo_path')
-                    ->searchable(),
+                    ->searchable()
+                    ->copyable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable()
+                    ->copyable(),
+                Tables\Columns\TextColumn::make('address')
+                    ->searchable()
+                    ->limit(50)
+                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > 50 ? $state : null;
+                    }),
+                Tables\Columns\TextColumn::make('socials')
+                    ->label('Social Links')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => is_array($state) ? count($state) . ' links' : '0 links'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -78,20 +148,21 @@ class CompanyResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -101,6 +172,14 @@ class CompanyResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 
     public static function getPages(): array

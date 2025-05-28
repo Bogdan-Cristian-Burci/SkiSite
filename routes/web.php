@@ -66,9 +66,7 @@ Route::group(['middleware' => 'setlocale'], function () {
 });
 
 // Fallback routes (for backwards compatibility and default English)
-// Ski Programs routes
-Route::get('/programs', [SkiProgramController::class, 'webIndex'])->name('programs.fallback');
-Route::get('/programs/{slug}', [SkiProgramController::class, 'webShow'])->name('programs.show.fallback');
+// Ski Programs routes - removed to avoid conflicts with language switching
 
 // Blog Posts routes
 Route::get('/blog', [BlogPostController::class, 'webIndex'])->name('blog.fallback');
@@ -129,14 +127,17 @@ Route::get('lang/{locale}', function ($locale) {
         session(['locale' => $locale]);
         app()->setLocale($locale);
 
-        // Get the current route and convert it to the target language
-        $currentRoute = request()->header('referer') ?: url('/');
-        $currentPath = parse_url($currentRoute, PHP_URL_PATH);
+        // Get the current route name from referer
+        $referer = request()->header('referer');
+        if (!$referer) {
+            return redirect($locale === 'en' ? route('en.home') : route('home'));
+        }
 
+        $currentPath = parse_url($referer, PHP_URL_PATH);
+        
         // Helper function to find content by slug and get translated slug
         $findTranslatedSlug = function($modelClass, $currentSlug, $currentLocale, $targetLocale) {
             try {
-                // For SQLite, we need to search all items and use getTranslation
                 $items = $modelClass::all();
                 foreach ($items as $item) {
                     if ($item->getTranslation('slug', $currentLocale) === $currentSlug) {
@@ -148,114 +149,113 @@ Route::get('lang/{locale}', function ($locale) {
             }
             return $currentSlug;
         };
-
-        // Route mappings between English and Romanian
-        $routeMappings = [
-            'en' => [
-                '/en' => '/',
-                '/en/programs' => '/programe',
-                '/en/blog' => '/blog',
-                '/en/team' => '/echipa',
-                '/en/testimonials' => '/testimoniale',
-                '/en/gallery' => '/galerie',
-                '/en/webcams' => '/webcamuri',
-                '/en/about' => '/despre',
-                '/en/camps' => '/tabere',
-                '/en/regulations' => '/regulamente',
-                '/en/contact' => '/contact',
-                '/en/pricing' => '/tarife',
-                '/en/privacy-policy' => '/politica-confidentialitate',
-            ],
-            'ro' => [
-                '/' => '/en',
-                '/programe' => '/en/programs',
-                '/blog' => '/en/blog',
-                '/echipa' => '/en/team',
-                '/testimoniale' => '/en/testimonials',
-                '/galerie' => '/en/gallery',
-                '/webcamuri' => '/en/webcams',
-                '/despre' => '/en/about',
-                '/tabere' => '/en/camps',
-                '/regulamente' => '/en/regulations',
-                '/contact' => '/en/contact',
-                '/tarife' => '/en/pricing',
-                '/politica-confidentialitate' => '/en/privacy-policy',
-            ]
-        ];
-
-        // Content type mappings for slug translation
-        $contentMappings = [
-            'programs' => \App\Models\SkiProgram::class,
-            'programe' => \App\Models\SkiProgram::class,
-            'blog' => \App\Models\BlogPost::class,
-            'camps' => \App\Models\Camp::class,
-            'tabere' => \App\Models\Camp::class,
-        ];
-
-        // Convert route based on target locale
-        if ($locale === 'ro') {
-            // Switching to Romanian - remove /en prefix and translate
-            foreach ($routeMappings['en'] as $enRoute => $roRoute) {
-                if (strpos($currentPath, $enRoute) === 0) {
-                    // Handle exact match
-                    if ($currentPath === $enRoute) {
-                        return redirect($roRoute);
-                    } elseif (strpos($currentPath, $enRoute . '/') === 0) {
-                        // Handle routes with slugs/parameters
-                        $remainingPath = substr($currentPath, strlen($enRoute) + 1); // +1 for the '/'
-                        $pathSegments = explode('/', $remainingPath);
-                        $slug = $pathSegments[0];
-
-                        // Find the content type and translate slug
-                        $routeKey = trim($enRoute, '/');
-                        $routeKey = str_replace('en/', '', $routeKey);
-
-                        if (isset($contentMappings[$routeKey])) {
-                            $translatedSlug = $findTranslatedSlug($contentMappings[$routeKey], $slug, 'en', 'ro');
-                            $pathSegments[0] = $translatedSlug;
-                            $newRemainingPath = implode('/', $pathSegments);
-                            return redirect($roRoute . '/' . $newRemainingPath);
-                        }
-
-                        return redirect($roRoute . '/' . $remainingPath);
-                    }
+        
+        // Map current path to target language route
+        try {
+            if ($locale === 'ro') {
+                // Switching to Romanian
+                if ($currentPath === '/en') {
+                    return redirect(route('home'));
+                } elseif ($currentPath === '/en/programs') {
+                    return redirect(route('ro.programs'));
+                } elseif (str_starts_with($currentPath, '/en/programs/')) {
+                    $slug = basename($currentPath);
+                    $translatedSlug = $findTranslatedSlug(\App\Models\SkiProgram::class, $slug, 'en', 'ro');
+                    return redirect(route('ro.programs.show', $translatedSlug));
+                } elseif ($currentPath === '/en/blog') {
+                    return redirect(route('ro.blog'));
+                } elseif (str_starts_with($currentPath, '/en/blog/')) {
+                    $slug = basename($currentPath);
+                    $translatedSlug = $findTranslatedSlug(\App\Models\BlogPost::class, $slug, 'en', 'ro');
+                    return redirect(route('ro.blog.show', $translatedSlug));
+                } elseif ($currentPath === '/en/team') {
+                    return redirect(route('ro.team'));
+                } elseif (str_starts_with($currentPath, '/en/team/')) {
+                    $slug = basename($currentPath);
+                    return redirect(route('ro.team.show', $slug));
+                } elseif ($currentPath === '/en/camps') {
+                    return redirect(route('ro.camps'));
+                } elseif (str_starts_with($currentPath, '/en/camps/')) {
+                    $slug = basename($currentPath);
+                    $translatedSlug = $findTranslatedSlug(\App\Models\Camp::class, $slug, 'en', 'ro');
+                    return redirect(route('ro.camps.show', $translatedSlug));
+                } elseif ($currentPath === '/en/regulations') {
+                    return redirect(route('ro.regulations'));
+                } elseif (str_starts_with($currentPath, '/en/regulations/')) {
+                    $slug = basename($currentPath);
+                    $translatedSlug = $findTranslatedSlug(\App\Models\Regulation::class, $slug, 'en', 'ro');
+                    return redirect(route('ro.regulations.show', $translatedSlug));
+                } elseif ($currentPath === '/en/testimonials') {
+                    return redirect(route('ro.testimonials'));
+                } elseif ($currentPath === '/en/gallery') {
+                    return redirect(route('ro.gallery'));
+                } elseif ($currentPath === '/en/webcams') {
+                    return redirect(route('ro.webcams'));
+                } elseif ($currentPath === '/en/about') {
+                    return redirect(route('ro.about'));
+                } elseif ($currentPath === '/en/contact') {
+                    return redirect(route('ro.contact'));
+                } elseif ($currentPath === '/en/pricing') {
+                    return redirect(route('ro.pricing'));
+                } elseif ($currentPath === '/en/privacy-policy') {
+                    return redirect(route('ro.privacy-policy'));
+                } else {
+                    return redirect(route('home'));
+                }
+            } else {
+                // Switching to English
+                if ($currentPath === '/') {
+                    return redirect(route('en.home'));
+                } elseif ($currentPath === '/programe') {
+                    return redirect(route('en.programs'));
+                } elseif (str_starts_with($currentPath, '/programe/')) {
+                    $slug = basename($currentPath);
+                    $translatedSlug = $findTranslatedSlug(\App\Models\SkiProgram::class, $slug, 'ro', 'en');
+                    return redirect(route('en.programs.show', $translatedSlug));
+                } elseif ($currentPath === '/blog') {
+                    return redirect(route('en.blog'));
+                } elseif (str_starts_with($currentPath, '/blog/')) {
+                    $slug = basename($currentPath);
+                    $translatedSlug = $findTranslatedSlug(\App\Models\BlogPost::class, $slug, 'ro', 'en');
+                    return redirect(route('en.blog.show', $translatedSlug));
+                } elseif ($currentPath === '/echipa') {
+                    return redirect(route('en.team'));
+                } elseif (str_starts_with($currentPath, '/echipa/')) {
+                    $slug = basename($currentPath);
+                    return redirect(route('en.team.show', $slug));
+                } elseif ($currentPath === '/tabere') {
+                    return redirect(route('en.camps'));
+                } elseif (str_starts_with($currentPath, '/tabere/')) {
+                    $slug = basename($currentPath);
+                    $translatedSlug = $findTranslatedSlug(\App\Models\Camp::class, $slug, 'ro', 'en');
+                    return redirect(route('en.camps.show', $translatedSlug));
+                } elseif ($currentPath === '/regulamente') {
+                    return redirect(route('en.regulations'));
+                } elseif (str_starts_with($currentPath, '/regulamente/')) {
+                    $slug = basename($currentPath);
+                    $translatedSlug = $findTranslatedSlug(\App\Models\Regulation::class, $slug, 'ro', 'en');
+                    return redirect(route('en.regulations.show', $translatedSlug));
+                } elseif ($currentPath === '/testimoniale') {
+                    return redirect(route('en.testimonials'));
+                } elseif ($currentPath === '/galerie') {
+                    return redirect(route('en.gallery'));
+                } elseif ($currentPath === '/webcamuri') {
+                    return redirect(route('en.webcams'));
+                } elseif ($currentPath === '/despre') {
+                    return redirect(route('en.about'));
+                } elseif ($currentPath === '/contact') {
+                    return redirect(route('en.contact'));
+                } elseif ($currentPath === '/tarife') {
+                    return redirect(route('en.pricing'));
+                } elseif ($currentPath === '/politica-confidentialitate') {
+                    return redirect(route('en.privacy-policy'));
+                } else {
+                    return redirect(route('en.home'));
                 }
             }
-            // If switching from English to Romanian and no mapping found, go to home
-            if (strpos($currentPath, '/en/') === 0) {
-                return redirect('/');
-            }
-        } else {
-            // Switching to English - add /en prefix and translate
-            foreach ($routeMappings['ro'] as $roRoute => $enRoute) {
-                if (strpos($currentPath, $roRoute) === 0) {
-                    // Handle exact match
-                    if ($currentPath === $roRoute) {
-                        return redirect($enRoute);
-                    } elseif (strpos($currentPath, $roRoute . '/') === 0) {
-                        // Handle routes with slugs/parameters
-                        $remainingPath = substr($currentPath, strlen($roRoute) + 1); // +1 for the '/'
-                        $pathSegments = explode('/', $remainingPath);
-                        $slug = $pathSegments[0];
-
-                        // Find the content type and translate slug
-                        $routeKey = trim($roRoute, '/');
-
-                        if (isset($contentMappings[$routeKey])) {
-                            $translatedSlug = $findTranslatedSlug($contentMappings[$routeKey], $slug, 'ro', 'en');
-                            $pathSegments[0] = $translatedSlug;
-                            $newRemainingPath = implode('/', $pathSegments);
-                            return redirect($enRoute . '/' . $newRemainingPath);
-                        }
-
-                        return redirect($enRoute . '/' . $remainingPath);
-                    }
-                }
-            }
-            // If switching from Romanian to English and no mapping found, go to /en
-            if (strpos($currentPath, '/en/') !== 0) {
-                return redirect('/en/programs');
-            }
+        } catch (\Exception $e) {
+            // If route generation fails, go to home
+            return redirect($locale === 'en' ? route('en.home') : route('home'));
         }
     }
     return redirect()->back();

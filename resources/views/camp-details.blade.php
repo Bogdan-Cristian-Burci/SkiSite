@@ -13,7 +13,7 @@
             <div class="row row-40 row-xl-50 flex-lg-row-reverse">
                 <div class="col-lg-12">
                     <article class="w-full">
-                        <h3 class="post-info-title">{{ $camp->getTranslation('title', app()->getLocale()) }}</h3>
+                        <h3 class="post-info-title mb-2">{{ $camp->getTranslation('title', app()->getLocale()) }}</h3>
 
                         <!-- Camp Hero Image -->
                         <div class="camp-hero-image mb-4">
@@ -63,7 +63,7 @@
                             <div class="camp-section">
                                 <h4>{{ __('Price Information') }}</h4>
                                 <div class="camp-content">
-                                    {!! nl2br(e($camp->getTranslation('price_info', app()->getLocale()))) !!}
+                                    {!! html_entity_decode($camp->getTranslation('price_info', app()->getLocale()), ENT_QUOTES, 'UTF-8') !!}
                                 </div>
                             </div>
                         @endif
@@ -73,7 +73,7 @@
                             <div class="camp-section">
                                 <h4>{{ __('Transport') }}</h4>
                                 <div class="camp-content">
-                                    {!! nl2br(e($camp->getTranslation('transport_info', app()->getLocale()))) !!}
+                                    {!! html_entity_decode($camp->getTranslation('transport_info', app()->getLocale()), ENT_QUOTES, 'UTF-8') !!}
                                 </div>
                             </div>
                         @endif
@@ -83,7 +83,7 @@
                             <div class="camp-section">
                                 <h4>{{ __('Meals') }}</h4>
                                 <div class="camp-content">
-                                    {!! nl2br(e($camp->getTranslation('meal_info', app()->getLocale()))) !!}
+                                    {!! html_entity_decode($camp->getTranslation('meal_info', app()->getLocale()), ENT_QUOTES, 'UTF-8') !!}
                                 </div>
                             </div>
                         @endif
@@ -93,7 +93,7 @@
                             <div class="camp-section">
                                 <h4>{{ __('Accommodation') }}</h4>
                                 <div class="camp-content">
-                                    {!! nl2br(e($camp->getTranslation('accommodation_info', app()->getLocale()))) !!}
+                                    {!! html_entity_decode($camp->getTranslation('accommodation_info', app()->getLocale()), ENT_QUOTES, 'UTF-8') !!}
                                 </div>
                             </div>
                         @endif
@@ -103,14 +103,14 @@
                             <div class="camp-section">
                                 <h4>{{ __('Details') }}</h4>
                                 <div class="camp-content">
-                                    {!! $camp->getTranslation('article_content', app()->getLocale()) !!}
+                                    {!! html_entity_decode($camp->getTranslation('article_content', app()->getLocale()), ENT_QUOTES, 'UTF-8') !!}
                                 </div>
                             </div>
                         @endif
 
                         <!-- Book Now Button -->
                         <div class="text-center mt-4">
-                            <a href="{{ route('contact') }}" class="button button-lg button-primary">
+                            <a href="{{ localized_route('contact') }}" class="button button-lg button-primary">
                                 {{ __('Book This Camp') }}
                             </a>
                         </div>

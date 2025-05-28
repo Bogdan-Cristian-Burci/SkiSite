@@ -20,13 +20,13 @@
                             <div class="col-sm-6">
                                 <article class="tour-classic">
                                     <div class="tour-classic-media">
-                                        <a class="tour-classic-figure" href="{{ route('programs.show', ['skiProgram' => $program->id]) }}">
+                                        <a class="tour-classic-figure" href="{{ localized_route('programs.show', ['slug' => $program->getTranslation('slug', app()->getLocale())]) }}">
                                             <img class="tour-classic-image" src="{{ asset($program->image_path) }}" alt="" width="365" height="248"/>
                                         </a>
                                     </div>
                                     <div class="tour-classic-body">
                                         <h4 class="tour-classic-title">
-                                            <a href="{{ route('programs.show', ['skiProgram' => $program->id]) }}">{{ $program->title }}</a>
+                                            <a href="{{ localized_route('programs.show', ['slug' => $program->getTranslation('slug', app()->getLocale())]) }}">{{ $program->title }}</a>
                                         </h4>
                                         <p class="tour-classic-caption">{{ $program->description }}</p>
                                     </div>
