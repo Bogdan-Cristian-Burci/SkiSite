@@ -1,0 +1,81 @@
+/**
+ * [Table of contents]
+ *   1 Components
+ *   2 Helpers
+ *   3 Plugins
+ *     3.1 Preloader
+ *     3.2 Material Parallax
+ *     3.3 Countdown
+ */
+
+// Main styles
+@import "../bootstrap/functions";
+@import "../bootstrap/variables";
+@import "../bootstrap/mixins";
+@import "variables";
+@import "mixins";
+@import "reset";
+
+/** @group Components */
+@import "components/type";
+@import "components/brand";
+@import "components/links";
+@import "components/blocks";
+@import "components/boxes";
+@import "components/groups";
+@import "components/units";
+@import "components/lists";
+@import "components/images";
+@import "components/icons";
+@import "components/tables";
+@import "components/dividers";
+@import "components/buttons";
+@import "components/forms";
+@import "components/posts";
+@import "components/quotes";
+@import "components/thumbnails";
+@import "components/breadcrumbs";
+@import "components/pagination";
+@import "components/snackbars";
+@import "components/footers";
+@import "components/layouts";
+@import "components/profiles";
+@import "components/tours";
+@import "components/destinations";
+@import "components/comments";
+@import "components/jumbotron";
+
+/** @group Helpers */
+@import "helpers/page-layout";
+@import "helpers/text-styling";
+@import "helpers/offsets";
+@import "helpers/sections";
+@import "helpers/grid-modules";
+@import "helpers/backgrounds"; 
+@import "helpers/utilities";
+
+/** @group Plugins */
+@import "plugins/animate";
+@import "plugins/preloader";
+@import "plugins/ui-to-top";
+@import "plugins/rd-navbar";
+@import "plugins/google-map";
+@import "plugins/rd-search";
+@import "plugins/nav-custom";
+@import "plugins/card";
+@import "plugins/tooltip";
+@import "plugins/counter";
+@import "plugins/progress-bars";
+@import "plugins/owl-carousel";
+@import "plugins/lightgallery";
+@import "plugins/material-parallax";
+@import "plugins/modal";
+@import "plugins/countdown";
+@import "plugins/bootstrap-material-datetimepicker";
+@import "plugins/rd-range";
+@import "plugins/m-parallax";
+@import "plugins/slick";
+@import "plugins/swiper";
+
+
+

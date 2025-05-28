@@ -1,0 +1,105 @@
+/*
+* Page layout
+*/
+
+// Page
+.page {
+	position: relative;
+	overflow: hidden;
+	min-height: 100vh;
+	opacity: 0;
+
+	&.fadeIn { animation-timing-function: ease-out; }
+	&.fadeOut { animation-timing-function: ease-in; }
+
+	[data-x-mode] & {
+		opacity: 1;
+	}
+}
+
+.page-header {
+	.rd-navbar-wrap {
+		position: relative;
+		z-index: $zindex-rd-navbar;
+	}
+}
+
+.page-header-1 {
+	position: relative;
+	background-color: $breadcrumb-bg;
+	background-position: center center;
+	background-size: cover;
+	.rd-navbar-classic {
+		position: relative;
+		z-index: $zindex-rd-navbar;
+		background-color: transparent;
+	}
+	
+	.breadcrumbs-custom {
+		&::before {
+			display: none;
+		}
+	}
+}
+
+.page-header-1-figure {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	&.m-parallax {
+		position: absolute;
+	}
+}
+
+.page-header-1-image {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	//&::before {
+	//	content: '';
+	//	position: absolute;
+	//	top: 0;
+	//	right: 0;
+	//	bottom: 0;
+	//	left: 0;
+	//	background: linear-gradient(225deg, rgba(21, 21, 21, 0.4) 36.97%, rgba(21, 21, 21, 0.26) 100%);
+	//}
+}
+
+// Page Header 2
+.page-header-2 {
+	@include media-breakpoint-up(lg) {
+		padding: 0 15px;
+	}
+	@include media-breakpoint-up(sm) {
+		.rd-navbar-static-linked & .rd-navbar--is-stuck {
+			.rd-navbar-main-outer {
+				padding: 0 15px;
+			}
+		} 
+	}
+	
+	@include media-breakpoint-up(xxl) {
+		padding: 0 60px;
+		.rd-navbar-static-linked & .rd-navbar--is-stuck {
+			.rd-navbar-main-outer {
+				padding: 0 60px;
+			}
+		}
+	}
+}
+
+.rd-navbar-static-linked {
+	.page-header-2 .rd-navbar-creative:not(.rd-navbar--is-stuck) {
+		.rd-navbar-main-outer {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+}

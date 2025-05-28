@@ -1,0 +1,104 @@
+/*
+* Text styling
+*/
+
+// Font types
+.font-family-cursive {
+	font-family: $font-family-cursive;
+}
+
+// Text styles
+.text-italic {
+	font-style: italic;
+}
+
+.text-normal {
+	font-style: normal;
+}
+
+// Text decoration
+.text-underline {
+	text-decoration: underline;
+}
+
+.text-strike {
+	text-decoration: line-through;
+}
+
+// Text weight
+.font-weight-thin {
+	font-weight: 100;
+}
+
+.font-weight-light {
+	font-weight: 300;
+}
+
+.font-weight-regular {
+	font-weight: 400;
+}
+
+.font-weight-medium {
+	font-weight: 500;
+}
+
+.font-weight-sbold {
+	font-weight: 600;
+}
+
+.font-weight-bold {
+	font-weight: 700;
+}
+
+.font-weight-ubold {
+	font-weight: 900;
+}
+
+// Text spacing
+.text-spacing-0 {
+	letter-spacing: 0;
+}
+
+.ls-1 {
+	letter-spacing: .03em;
+}
+
+.ls-02{
+	letter-spacing: -.02em;
+}
+
+html .page {
+	.text-primary {
+		color: $primary !important;
+	}
+
+	.text-secondary {
+		color: $secondary;
+	}
+
+	.text-gray-800 {
+		color: $gray-800;
+	}
+
+	.text-gray-500 {
+		color: $gray-500;
+	}
+
+	.text-black {
+		color: $black;
+	}
+	.text-accent{
+		color: $accent-black
+	}
+	.text-white-07{
+		color: rgba($white,.7)
+	}
+
+	.text-accent-07{
+		color: $accent-black
+	}
+}
+
+.text-shadow-1 {
+	text-shadow: 0 4px 15px rgba($black, .15);
+}

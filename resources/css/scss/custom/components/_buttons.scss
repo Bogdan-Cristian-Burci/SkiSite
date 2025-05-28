@@ -1,0 +1,373 @@
+/*
+* Buttons
+*/
+
+// Button General Styles
+
+.button {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+	@include btn-size($input-btn-padding-y, $input-btn-padding-x, $input-btn-font-size, $input-btn-line-height);
+	border: 1px solid;
+	font-family: $btn-font-family;
+	font-weight: $btn-font-weight;
+	letter-spacing: $btn-letter-spacing;
+	text-transform: $btn-text-transform;
+	border-radius: $btn-border-radius;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: center;
+	cursor: pointer;
+	vertical-align: middle;
+	user-select: none;
+	transition: 250ms all ease-in-out;
+}
+
+.button-block {
+	display: block;
+	width: 100%;
+}
+
+.button-square{
+	border-radius: 0;
+}
+//
+// Appearance style
+// 
+
+.button-default {
+	@include btn-variant($gray-300, $gray-700, $gray-700, $white, $primary, $primary);
+}
+
+.button-primary {
+	@include btn-variant($white, $primary, $primary, $white, $secondary, $secondary);
+}
+
+.button-light {
+	border: 0;
+	@include btn-variant($white, rgba($black, .2), rgba($black, .2), $white, $secondary, $secondary);
+}
+
+.button-style-1 {
+	@include btn-variant($black, #F6F6F6,#C4C4C4, $white, $primary, $primary);
+	letter-spacing: .04em;
+	&.button-sm{
+		font-size: 13px;
+	}
+	font-weight: 500;
+}
+
+.button-white-inverse {
+	@include btn-variant($accent-black, $white, $white, $white, $accent-black, $accent-black);
+}
+
+
+// Outline
+.button-default-outline {
+	@include btn-variant($black, transparent, $gray-800, $white, $primary, $primary);
+}
+
+.button-gray-300-outline {
+	@include btn-variant($gray-300, transparent, $gray-300, $white, $primary, $primary);
+}
+
+//
+// Button Sizes
+// 
+
+.button-sm {
+	@include btn-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, 14px, $input-btn-line-height-sm);
+}
+
+.button-lg {
+	@include btn-size($input-btn-padding-y-lg, $input-btn-padding-x-lg, 14px, $input-btn-line-height-lg);
+	
+	@include media-breakpoint-up(md) {
+		min-width: 160px;
+	}
+}
+
+.button-large {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	@include media-breakpoint-up(lg) {
+	  height: 60px;
+	}
+	
+	@include media-breakpoint-up(xxl) {
+	  height: 80px;
+	} 
+}
+
+//
+// Button Icon styles
+//
+.button {
+	&.button-icon {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		vertical-align: middle;
+
+		.icon {
+			position: relative;
+			display: inline-block;
+			vertical-align: middle;
+			color: inherit;
+			font-size: 1.55em;
+			line-height: 1em;
+		}
+
+		&-left {
+			.icon {
+				padding-right: 8px;
+			}
+		}
+
+		&-right {
+			flex-direction: row-reverse;
+			.icon {
+				padding-left: 8px;
+			}
+		}
+
+		&.button-link {
+			.icon {
+				top: 5px;
+				font-size: 1em;
+			}
+		}
+	}
+} 
+
+//
+// Bootstrap buttons
+//
+
+.btn-primary {
+	border-radius: 3px;
+	font-family: $btn-font-family;
+	font-weight: $btn-font-weight;
+	letter-spacing: .05em;
+	text-transform: uppercase;
+	transition: .33s;
+
+	&,
+	&:active,
+	&:focus {
+		color: $white;
+		background: $primary;
+		border-color: $primary;
+	}
+
+	&:hover {
+		color: $white;
+		background: $black;
+		border-color: $black;
+	}
+}
+
+
+//
+// Button Gallery
+//
+.button-gallery {
+	.button-gallery-inner {
+		height: 0;
+		width: 0;
+		opacity: 0;
+		visibility: hidden;
+
+		img {
+			opacity: 0;
+		}
+		
+		a:first-child {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			visibility: visible;
+		}
+	}
+}
+
+
+//
+// Button 1
+//
+.button-1 {
+	border: 0;
+	padding-left: 0;
+	padding-right: 0;
+	overflow: visible;
+
+	&::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		transform: translate3d(-50%, 0, 0);
+		width: 100%;
+		bottom: 0;
+		height: 1px;
+		background: $gray-500;
+		transition: .22s;
+	}
+
+	&,
+	&:active,
+	&:focus {
+		color: $gray-500;
+	}
+}
+
+@include media-breakpoint-up(lg) {
+  .desktop {
+		.button-1 {
+			&:hover {
+				color: $primary;
+				&::after {
+					width: 110%;
+					background: $primary;
+				}
+			}
+		}
+  }
+}
+
+//
+// Button 2
+//
+.button-2 {
+	padding: 20px;
+	min-width: 80px;
+	
+	@include media-breakpoint-up(xl) {
+		padding: 22px 15px;
+	}
+}
+
+//
+// Button To Bottom
+//
+.button-to-bottom {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: $gray-100;
+	font-size: 0;
+	line-height: 0;
+	
+	svg {
+		fill: $primary;
+	}
+}
+
+.context-dark {
+	.button-to-bottom {
+		background: $white;
+
+		&::before,
+		&::after {
+			border-color: $white;
+		}
+	}
+}
+
+
+* + .button-to-bottom { margin-top: 20px; }
+
+@include media-breakpoint-up(md) {
+  .button-to-bottom {
+		$circle-1-size: (96 / 75) * 100%;
+		$circle-2-size: (118 / 75) * 100%;
+		width: 60px;
+		height: 60px;
+		
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			border: 1px solid $gray-100;
+			border-radius: inherit;
+		}
+
+		&::before {
+			left: -($circle-1-size - 100%) / 2;
+			top: -($circle-1-size - 100%) / 2;
+			width: $circle-1-size;
+			height: $circle-1-size;
+			opacity: .5;
+		}
+
+		&::after {
+			left: -($circle-2-size - 100%) / 2;
+			top: -($circle-2-size - 100%) / 2;
+			width: $circle-2-size;
+			height: $circle-2-size;
+			opacity: .3;
+		}
+	}
+
+	* + .button-to-bottom { margin-top: 30px; }
+}
+
+@include media-breakpoint-up(lg) {
+  .desktop {
+		.button-to-bottom {
+			&::before,
+			&::after {
+				transition: .4s;	
+			}
+			
+			&:hover {
+				&::before,
+				&::after {
+					transform: scale(.8);
+					opacity: 0;
+				}
+			}
+		}
+  }
+
+	* + .button-to-bottom { margin-top: 50px; }
+}
+
+
+@include media-breakpoint-up(xxl) {
+  .button-to-bottom {
+		width: 76px;
+		height: 76px;
+	} 
+}
+
+.btn-md{
+	display: inline-flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-width: 170px;
+	height: 60px;
+}
+
+.btn-lg{
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-width: 240px;
+	height: 60px;
+}
+
+.ie-10,.ie-11{
+	.btn-md{width: 170px}
+	.btn-lg{width: 240px}
+}

@@ -1,0 +1,102 @@
+/* Language Switcher Responsive Styles */
+
+/* Base styles for all language switchers */
+.navbar-lang-switcher a img {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.navbar-lang-switcher a:hover img {
+    opacity: 1 !important;
+    transform: scale(1.05);
+}
+
+/* Home page header styles */
+.navbar-lang-mobile {
+    display: flex !important;
+}
+
+.navbar-lang-desktop {
+    display: none !important;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 767px) {
+    /* Mobile: Show mobile version, hide desktop */
+    .navbar-lang-mobile {
+        display: flex !important;
+        order: -1; /* Place before menu button */
+        margin-right: 10px !important;
+    }
+    
+    .navbar-lang-desktop {
+        display: none !important;
+    }
+    
+    /* Adjust mobile navbar panel for language switcher */
+    .rd-navbar-panel {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+    /* Tablet: Show mobile version */
+    .navbar-lang-mobile {
+        display: flex !important;
+        margin-right: 15px !important;
+    }
+    
+    .navbar-lang-desktop {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    /* Desktop: Show desktop version, hide mobile */
+    .navbar-lang-mobile {
+        display: none !important;
+    }
+    
+    .navbar-lang-desktop {
+        display: flex !important;
+    }
+}
+
+/* Inner pages navbar adjustments */
+.rd-navbar-wrap .navbar-lang-switcher {
+    pointer-events: all;
+    cursor: pointer;
+}
+
+/* Ensure clickability on inner pages */
+@media (max-width: 991px) {
+    .rd-navbar-wrap .navbar-lang-switcher {
+        position: fixed !important;
+        top: 10px !important;
+        right: 10px !important;
+        z-index: 9999 !important;
+        background: rgba(255,255,255,0.95) !important;
+        backdrop-filter: blur(5px);
+        padding: 8px 12px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    }
+}
+
+/* Hover effects */
+.navbar-lang-switcher a {
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+.navbar-lang-switcher a img {
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.navbar-lang-switcher a:hover img {
+    border-color: #007bff !important;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.2) !important;
+}
