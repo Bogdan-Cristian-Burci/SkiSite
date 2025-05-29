@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6 text-center">
-                    <img src="{{ asset($instructor->image_path) }}" alt="{{ $instructor->user->name ?? 'Instructor' }}" class="img-fluid mb-4" width="272" height="197">
+                    <img src="{{ asset('storage/'.$instructor->image_path) }}" alt="{{ $instructor->user->name ?? 'Instructor' }}" class="img-fluid mb-4" width="272" height="197">
                     <h2>{{ $instructor->user->name ?? 'Instructor' }}</h2>
                     <h5 class="text-muted">{{ $instructor->position }}</h5>
                     <p>{{ $instructor->bio }}</p>

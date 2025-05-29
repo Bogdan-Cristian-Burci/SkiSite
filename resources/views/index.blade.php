@@ -11,7 +11,7 @@
     <div class="swiper-container swiper-slider swiper-slider-1 context-dark" data-loop="false" data-autoplay="4000" data-simulate-touch="false" data-slide-effect="fade" data-nav="true">
         <div class="swiper-wrapper">
             @foreach($heroSliders as $slider)
-                <div class="swiper-slide" data-slide-bg="{{ $slider->image_path }}">
+                <div class="swiper-slide" data-slide-bg="{{ asset('storage/'.$slider->image_path) }}">
                     <div class="container">
                         <div class="row">
                             <div class="col-xl-4 col-lg-7">
@@ -87,7 +87,7 @@
                             @foreach($skiPrograms as $skiProgram)
                                 <div class="col-xs-6 col-sm-6 wow fadeIn" data-wow-delay="{{ $loop->index * 0.05 }}s">
                                     <article class="tour-minimal context-dark">
-                                        <div class="tour-minimal-inner" style="background-image: url({{ asset($skiProgram->image_path) }});">
+                                        <div class="tour-minimal-inner" style="background-image: url({{ asset('storage/'.$skiProgram->image_path) }});">
                                             <div class="tour-minimal-header">
                                             </div>
                                             <div class="tour-minimal-main">
@@ -299,7 +299,7 @@
                             <div class="col-sm-6 col-lg-12 wow fadeIn" data-wow-delay="{{ $loop->index * 0.05 }}s">
                                 <!-- Profile Light-->
                                 <article class="profile-light">
-                                    <img class="profile-light-image" src="{{ asset($skiInstructor->image_path) }}" alt="{{$skiInstructor->user->name}}" style="width:95px;height:95px;border: 3px solid lightblue;"/>
+                                    <img class="profile-light-image" src="{{ asset('storage/'.$skiInstructor->image_path) }}" alt="{{$skiInstructor->user->name}}" style="width:95px;height:95px;border: 3px solid lightblue;"/>
                                     <div class="profile-light-main">
                                         <p class="profile-light-position">{{ $skiInstructor->position }}</p>
                                         <h5 class="profile-light-name">{{ $skiInstructor->user->name }}</h5>
