@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row row-40 row-xl-50 flex-lg-row-reverse">
                 <div class="col-lg-4">
-                    @include('partials.contact-form')
+                    @include('partials.appointment-form')
                 </div>
                 <div class="col-lg-8">
                     <div class="row row-30 row-xl-40">

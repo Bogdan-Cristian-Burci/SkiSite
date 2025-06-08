@@ -42,32 +42,10 @@
                 <div class="col-lg-5 col-xl-5">
                     <div class="section-custom-1-block">
                         <div class="row row-40">
-                            <div class="col-md-6 col-lg-12">
-                                <h4 class="wow fadeIn font-weight-regular">Make an appointment</h4>
-                                <!-- RD Mail form-->
-                                <form class="rd-form rd-mailform form-lg" method="POST" action="{{ route('contact.store') }}">
-                                    @csrf
-                                    <div class="form-wrap form-wrap-icon wow fadeIn" data-wow-delay=".05s">
-                                        <input class="form-input form-label-outside" id="login-name-2" type="text" name="name"/>
-                                        <label class="form-label" for="login-name-2">Name</label>
-                                        <div class="icon form-icon mdi mdi-account-outline"></div>
-                                    </div>
-                                    <div class="form-wrap form-wrap-icon wow fadeIn" data-wow-delay=".1s">
-                                        <input class="form-input" id="contact-3-email" type="email" name="email" >
-                                        <label class="form-label form-label-outside" for="contact-3-email">E-mail</label>
-                                        <div class="icon form-icon mdi mdi-calendar-text"></div>
-                                    </div>
-                                    <div class="form-wrap form-wrap-icon wow fadeIn" data-wow-delay=".15s">
-                                        <input class="form-input" id="contact-3-phone" type="text" name="phone" >
-                                        <label class="form-label" for="contact-3-phone">Phone</label>
-                                        <div class="icon form-icon mdi mdi-account-multiple"></div>
-                                    </div>
-                                    <div class="form-element wow fadeIn" data-wow-delay=".2s">
-                                        <button class="button button-lg button-primary btn-lg" type="submit">Submit</button>
-                                    </div>
-                                </form>
+                            <div class="col-md-12 col-lg-12">
+                                @include('partials.appointment-form')
                             </div>
-                            <div class="col-md-6 col-lg-12">
+                            <div class="col-md-12 col-lg-12">
                                 <div class="box-call">
                                     <div class="heading-4">Do you need help?</div>
                                     <p>Watch this presentation to know more about us.</p>
@@ -112,71 +90,55 @@
         <div class="container">
             <div class="row row-50">
                 <div class="col-lg-8">
-                    <h3 class="text-center text-sm-left">Recent News Posts</h3>
-                    <article class="tour-modern mt-30 mt-xl-60 wow fadeIn" data-wow-delay=".05s">
-                        <div class="tour-modern-media">
-                            <a class="tour-modern-figure" href="{{ localized_route('blog.show', 1) }}">
-                                <img class="tour-modern-image" src="{{ asset('images/post-1-358x450.jpg') }}" alt="" width="358" height="450"/>
-                            </a>
-                        </div>
-                        <div class="tour-modern-main">
-                            <h4 class="tour-modern-title"><a href="{{ localized_route('blog.show', 1) }}">Top 5 Secret Tips for Advanced Skiers of All Ages</a></h4>
-                            <div class="tour-modern-info">
-                                <p class="tour-modern-tag">news</p>
+                    <h3 class="text-center text-sm-left">{{__("Recent News Posts")}}</h3>
+                    @foreach($blogs as $blog)
+                        <article class="tour-modern mt-30 mt-xl-60 wow fadeIn" data-wow-delay="{{ $loop->index * 0.05 }}s">
+                            <div class="tour-modern-media">
+                                <a class="tour-modern-figure" href="{{ localized_route('blog.show', $blog->getTranslation('slug', app()->getLocale()) ?: $blog->id) }}">
+                                    <img class="tour-modern-image" src="{{ asset('storage/'.$blog->image_path) }}" alt="{{$blog->getTranslation('title', app()->getLocale())}}" width="358" height="450"/>
+                                </a>
                             </div>
-                            <p>Whether you're a beginner or an expert, these insider tips are the savvy skier or snowboarder's way to give skills a boost and enjoy every minute of slope time, without booking a week...</p>
-                        </div>
-                    </article>
-                    <article class="tour-modern wow fadeIn" data-wow-delay=".1s">
-                        <div class="tour-modern-media">
-                            <a class="tour-modern-figure" href="{{ localized_route('blog.show', 2) }}">
-                                <img class="tour-modern-image" src="{{ asset('images/post-2-358x450.jpg') }}" alt="" width="358" height="450"/>
-                            </a>
-                        </div>
-                        <div class="tour-modern-main">
-                            <h4 class="tour-modern-title"><a href="{{ localized_route('blog.show', 2) }}">Where to Ski This Winter: 5 Best Locations</a></h4>
-                            <div class="tour-modern-info">
-                                <p class="tour-modern-tag">news</p>
+                            <div class="tour-modern-main">
+                                <h4 class="tour-modern-title"><a href="{{ localized_route('blog.show', $blog->getTranslation('slug', app()->getLocale()) ?: $blog->id) }}">{{$blog->title}}</a></h4>
+                                <div class="tour-modern-info">
+                                    <p class="tour-modern-tag">{{$blog->categories->name}}</p>
+                                </div>
+                                <p>{{$blog->subtitle}}</p>
                             </div>
-                            <p>When it comes to skiing and general fun on the snow, there is no single country that adequately emerges as the best. Each comes with its own upsides dishing out experiences to...</p>
-                        </div>
-                    </article>
+                        </article>
+                    @endforeach
                 </div>
                 <div class="col-lg-4">
                     <div class="row row-40 row-md-50 row-xxl-80">
                         <div class="col-md-6 col-lg-12">
-                            <h3 class="text-center text-sm-left wow fadeIn">Popular Destinations</h3>
-                            <article class="box-8 mt-30 mt-xl-60 wow fadeIn" data-wow-delay=".1s">
-                                <ul class="list-marked__creative">
-                                    <li><a href="#">Equipment Storage</a></li>
-                                    <li><a href="#">Complimentary Transfers</a></li>
-                                    <li><a href="#">Corporate Courses</a></li>
-                                    <li><a href="#">Gear Rental</a></li>
-                                </ul>
-                            </article>
+                            @if($popularDestinations->count() > 0)
+                                <h3 class="text-center text-sm-left wow fadeIn">Popular Destinations</h3>
+                                <article class="box-8 mt-30 mt-xl-60 wow fadeIn" data-wow-delay=".1s">
+                                    <ul class="list-marked__creative">
+                                        @foreach($popularDestinations as $destination)
+                                            <li><a href="{{ $destination->url }}">{{ $destination->title }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </article>
+                            @endif
                         </div>
                         <div class="col-md-6 col-lg-12">
-                            <h3 class="text-center text-sm-left wow fadeIn">Why choose us</h3>
-                            <ul class="row list-group-2 row-20 row-md-30 mt-30 mt-xl-50 advantages-list">
-                                <li class="col-sm-6 col-md-12 wow fadeIn" data-wow-delay=".05s">
-                                    <article class="lg-2-item">
-                                        <span class="icon linearicons-landscape"></span>
-                                        <div class="lg-2-item-main">
-                                            <h4 class="lg-2-item-title">Amazing Place</h4>
-                                            <p>Our skiing school is situated in one of the top skiing locations.</p>
-                                        </div>
-                                    </article>
-                                </li>
-                                <li class="col-sm-6 col-md-12 wow fadeIn" data-wow-delay=".1s">
-                                    <article class="lg-2-item">
-                                        <span class="icon linearicons-users2"></span>
-                                        <div class="lg-2-item-main">
-                                            <h4 class="lg-2-item-title">Best Instructors</h4>
-                                            <p>SkiUp is a team of qualified and friendly skiing instructors.</p>
-                                        </div>
-                                    </article>
-                                </li>
-                            </ul>
+                            @if($whyChooseUs->count() > 0)
+                                <h3 class="text-center text-sm-left wow fadeIn">Why choose us</h3>
+                                <ul class="row list-group-2 row-20 row-md-30 mt-30 mt-xl-50 advantages-list">
+                                    @foreach($whyChooseUs as $index => $item)
+                                        <li class="col-sm-6 col-md-12 wow fadeIn" data-wow-delay="{{ ($index + 1) * 0.05 }}s">
+                                            <article class="lg-2-item">
+                                                <span class="icon {{ $item->icon }}"></span>
+                                                <div class="lg-2-item-main">
+                                                    <h4 class="lg-2-item-title">{{ $item->title }}</h4>
+                                                    <p>{{ $item->subtitle }}</p>
+                                                </div>
+                                            </article>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -185,13 +147,14 @@
     </section>
 
     <!-- Join Our School-->
-    <section class="section section-md section-md-1 bg-image bg-overlay-3 context-dark text-center" style="background-image: url({{ asset('images/bg-image-11.jpg') }});">
-        <div class="container">
-            <h2 class="text-1 mt-xl-40 wow fadeIn" data-wow-delay=".025s">Join Our School</h2>
-            <p class="block-8 mt-20 mt-xl-30 wow fadeIn" data-wow-delay=".05s">Looking for a place to hone your skiing skills? Join SkiUp to discover the best skiing lessons in the USA. Whether you prefer to learn to ski alone or in a group, we have what you need.</p>
-            <a class="button button-white-inverse btn-md mt-xl-40 wow fadeIn" href="{{ localized_route('contact') }}" data-wow-delay=".075s">Join Now</a>
-        </div>
-    </section>
+    @if($dividingSection)
+        <section class="section section-md section-md-1 bg-image bg-overlay-3 context-dark text-center" style="background-image: url({{ asset('storage/'.$dividingSection->image_path) }});">
+            <div class="container">
+                <h2 class="text-1 mt-xl-40 wow fadeIn" data-wow-delay=".025s">{{ $dividingSection->title }}</h2>
+                <p class="block-8 mt-20 mt-xl-30 wow fadeIn" data-wow-delay=".05s">{{ $dividingSection->subtitle }}</p>
+            </div>
+        </section>
+    @endif
 
     <!-- Camps-->
     <section class="section section-lg bg-default text-center">
@@ -241,56 +204,51 @@
         </div>
     </section>
 
+    @if($testimonials->count() > 0)
     <!-- What Our Clients Say-->
     <section class="section section-lg bg-gray-100 text-center">
         <div class="container">
-            <h3 class="ls-02 wow fadeIn">What Our Clients Say</h3>
-            <p class="block-9 text-gray-500 wow fadeIn" data-wow-delay=".025s">These testimonials written by our regular clients are the best way to find out more about SkiUp's level of service and expertise.</p>
+            <h3 class="ls-02 wow fadeIn">{{__('What Our Clients Say')}}</h3>
+            <p class="block-9 text-gray-500 wow fadeIn" data-wow-delay=".025s">{{__('What Our Clients Say content')}}.</p>
             <!-- Testimonials slider -->
             <div class="slick-slider slick-slider-1" data-loop="true" data-autoplay="true" data-dots="true" data-swipe="true" data-items="1" data-xs-items="1" data-sm-items="1" data-md-items="3" data-lg-items="3" data-xl-items="3" data-center-mode="true" data-speed="600">
                 <!-- Testimonial items -->
+                @foreach($testimonials as $testimonial)
+                    <div class="item">
+                        <!-- Quote Classic-->
+                        <blockquote class="quote-classic">
+                            <div class="quote-classic-inner">
+                                <div class="quote-classic-header">
+                                    <div class="quote-classic-profile">
+                                        <cite class="quote-classic-cite heading-4">{{$testimonial->author_name}}</cite>
+                                    </div>
+                                </div>
+                                <div class="quote-classic-text">
+                                    <p>{{$testimonial->content}}</p>
+                                </div>
+                                <time class="quote-classic-time" datetime="2020">{{$testimonial->created_at}}</time>
+                            </div>
+                        </blockquote>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
-
+    @endif
     <!-- Get in Touch-->
     <section class="section section-lg">
         <div class="container">
             <div class="row row-50">
                 <div class="col-lg-8">
-                    <h3 class="wow fadeIn">Get in Touch</h3>
-                    <article class="box-7 mt-md-45 mt-xxl-70 wow fadeIn bg-gray-100" data-wow-delay=".05s">
-                        <!-- Contact form -->
-                        <form class="rd-form rd-mailform form-lg" method="POST" action="{{ route('contact.store') }}">
-                            @csrf
-                            <div class="row row-30">
-                                <div class="col-md-6">
-                                    <div class="form-wrap form-wrap-icon">
-                                        <input class="form-input" id="contact-name" type="text" name="name"/>
-                                        <label class="form-label" for="contact-name">Name</label>
-                                        <div class="icon form-icon mdi mdi-account-outline text-primary"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-wrap form-wrap-icon">
-                                        <input class="form-input" id="contact-email" type="email" name="email"/>
-                                        <label class="form-label" for="contact-email">E-mail</label>
-                                        <div class="icon form-icon mdi mdi-email-outline text-primary"></div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-wrap form-wrap-icon">
-                                        <label class="form-label" for="contact-message">Message</label>
-                                        <textarea class="form-input" id="contact-message" name="message"></textarea>
-                                        <div class="icon form-icon mdi mdi-message-outline text-primary"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-wrap form-wrap-button">
-                                <button class="button button-lg button-primary" type="submit">Send</button>
-                            </div>
-                        </form>
-                    </article>
+                    <h3 class="wow fadeIn">{{ __('Get in Touch') }}</h3>
+                    @include('partials.contact-form', [
+                        'layout' => 'inline',
+                        'title' => false,
+                        'containerClass' => 'wow fadeIn',
+                        'showSubject' => true,
+                        'showCategory' => true,
+                        'messageRows' => '4'
+                    ])
                 </div>
                 <div class="col-lg-4">
                     <h3 class="wow fadeIn">{{__("Instructors")}}</h3>
@@ -321,6 +279,44 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    // Debug script for slick slider
+    console.log('DOM ready - checking for slick sliders');
+    console.log('Slick sliders found:', $('.slick-slider').length);
+    $('.slick-slider').each(function(index) {
+        console.log('Slider ' + index + ':', this);
+        console.log('Children count:', $(this).children().length);
+    });
+    
+    // Force initialize slick if not already initialized
+    setTimeout(function() {
+        $('.slick-slider').each(function() {
+            if (!$(this).hasClass('slick-initialized')) {
+                console.log('Manually initializing slider:', this);
+                $(this).slick({
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    dots: true,
+                    autoplay: true,
+                    centerMode: true,
+                    responsive: [
+                        {
+                            breakpoint: 768,
+                            settings: {
+                                slidesToShow: 1
+                            }
+                        }
+                    ]
+                });
+            }
+        });
+    }, 1000);
+});
+</script>
+@endpush
 
 @push('styles')
     <!-- Additional styles for the home page if needed -->

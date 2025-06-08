@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Appointment */
-class AppoitmentResource extends JsonResource
+class AppointmentResource extends JsonResource
 {
     public function toArray(Request $request): array
     {

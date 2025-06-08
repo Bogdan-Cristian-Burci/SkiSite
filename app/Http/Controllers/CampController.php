@@ -101,4 +101,26 @@ class CampController extends Controller
         
         return view('camp-details', compact('camp'));
     }
+
+    public function book(Request $request, Camp $camp)
+    {
+        $user = auth()->user();
+        
+        // Check if user is already booked for this camp
+        if ($user->camps()->where('camp_id', $camp->id)->exists()) {
+            return redirect()->back()->with('error', __('You are already booked for this camp.'));
+        }
+        
+        // Default values for adults and children
+        $numberOfAdults = $request->input('number_of_adults', 1);
+        $numberOfChildren = $request->input('number_of_children', 0);
+        
+        // Book the user to the camp
+        $user->camps()->attach($camp->id, [
+            'number_of_adults' => $numberOfAdults,
+            'number_of_children' => $numberOfChildren,
+        ]);
+        
+        return redirect()->back()->with('success', __('Successfully booked for the camp!'));
+    }
 }

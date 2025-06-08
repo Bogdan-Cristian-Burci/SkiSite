@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->unsignedInteger('number_of_children');
             $table->unsignedInteger('hours_per_day');
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('ski_instructor_id')->constrained('ski_instructors');
+            $table->foreignId('ski_instructor_id')->nullable()->constrained('ski_instructors');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\BlogPost;
 use App\Models\Camp;
 use App\Models\Categories;
+use App\Models\Comment;
 use App\Models\Company;
 use App\Models\Gallery;
 use App\Models\HeaderImage;
@@ -17,6 +18,7 @@ use App\Models\Webcam;
 use App\Policies\BlogPostPolicy;
 use App\Policies\CampPolicy;
 use App\Policies\CategoriesPolicy;
+use App\Policies\CommentPolicy;
 use App\Policies\CompanyPolicy;
 use App\Policies\GalleryPolicy;
 use App\Policies\HeaderImagePolicy;
@@ -48,6 +50,7 @@ class AuthServiceProvider extends ServiceProvider
         SkiProgram::class => SkiProgramPolicy::class,
         Testimonial::class => TestimonialPolicy::class,
         Webcam::class => WebcamPolicy::class,
+        Comment::class => CommentPolicy::class,
     ];
 
     /**

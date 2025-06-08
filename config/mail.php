@@ -115,4 +115,17 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact Reply Time
+    |--------------------------------------------------------------------------
+    |
+    | This option specifies the number of days within which we promise to
+    | reply to contact form submissions. This value is used in automated
+    | email responses to set customer expectations.
+    |
+    */
+
+    'contact_replay_time' => env('CONTACT_REPLAY_TIME', 2),
+
 ];

@@ -10,7 +10,7 @@ class Company extends Model
 {
     use SoftDeletes, HasTranslations;
 
-    public array $translatable = ['name','description'];
+    public array $translatable = ['name','description', 'about_title', 'about_content'];
     protected $fillable = [
         'name',
         'description',
@@ -19,6 +19,9 @@ class Company extends Model
         'email',
         'logo_path',
         'socials',
+        'about_title',
+        'about_content',
+        'about_image_path',
     ];
 
     protected function casts()

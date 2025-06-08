@@ -10,9 +10,7 @@ return new class extends Migration {
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
             $table->string('author_name');
-            $table->string('author_image_path');
             $table->json('content');
-            $table->string('social_link')->nullable();
             $table->boolean('approved_status');
             $table->timestamps();
             $table->softDeletes();

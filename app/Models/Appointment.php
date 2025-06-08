@@ -30,6 +30,7 @@ class Appointment extends Model
         return $this->belongsTo(SkiInstructor::class);
     }
 
+
     protected function casts(): array
     {
         return [

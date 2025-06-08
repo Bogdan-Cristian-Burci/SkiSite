@@ -82,6 +82,63 @@ class CompanyResource extends Resource
                             ->required(),
                     ]),
 
+                Forms\Components\Section::make('About Us Page Content')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('about_title.en')
+                                    ->label('About Title (English)')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('about_title.ro')
+                                    ->label('About Title (Romanian)')
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\RichEditor::make('about_content.en')
+                                    ->label('About Content (English)')
+                                    ->toolbarButtons([
+                                        'attachFiles',
+                                        'blockquote',
+                                        'bold',
+                                        'bulletList',
+                                        'codeBlock',
+                                        'h2',
+                                        'h3',
+                                        'italic',
+                                        'link',
+                                        'orderedList',
+                                        'redo',
+                                        'strike',
+                                        'underline',
+                                        'undo',
+                                    ]),
+                                Forms\Components\RichEditor::make('about_content.ro')
+                                    ->label('About Content (Romanian)')
+                                    ->toolbarButtons([
+                                        'attachFiles',
+                                        'blockquote',
+                                        'bold',
+                                        'bulletList',
+                                        'codeBlock',
+                                        'h2',
+                                        'h3',
+                                        'italic',
+                                        'link',
+                                        'orderedList',
+                                        'redo',
+                                        'strike',
+                                        'underline',
+                                        'undo',
+                                    ]),
+                            ]),
+                        Forms\Components\FileUpload::make('about_image_path')
+                            ->label('About Us Image')
+                            ->image()
+                            ->directory('about')
+                            ->visibility('public'),
+                    ]),
+
                 Forms\Components\Section::make('Social Media')
                     ->schema([
                         Forms\Components\Repeater::make('socials')

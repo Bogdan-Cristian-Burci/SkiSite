@@ -109,6 +109,31 @@ class BlogPostController extends Controller
             ->whereJsonContains("slug->{$locale}", $slug)
             ->firstOrFail();
         
-        return view('blog-post', compact('blogPost'));
+        // Get approved comments for this blog post
+        $comments = $blogPost->comments()
+            ->with('user')
+            ->where('aproved_status', true)
+            ->latest()
+            ->get();
+        
+        // Get related posts (same category, excluding current post)
+        $relatedPosts = BlogPost::with(['categories', 'user'])
+            ->where('categories_id', $blogPost->categories_id)
+            ->where('id', '!=', $blogPost->id)
+            ->latest()
+            ->limit(4)
+            ->get();
+        
+        // Get recent posts for sidebar
+        $newPosts = BlogPost::with(['categories', 'user'])
+            ->where('id', '!=', $blogPost->id)
+            ->latest()
+            ->limit(3)
+            ->get();
+        
+        // Get all categories with blog post counts
+        $categories = \App\Models\Categories::withCount('blogPosts')->get();
+        
+        return view('blog-post', compact('blogPost', 'comments', 'relatedPosts', 'newPosts', 'categories'));
     }
 }

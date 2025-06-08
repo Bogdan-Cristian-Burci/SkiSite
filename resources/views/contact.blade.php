@@ -38,43 +38,13 @@
 
     <section class="section section-lg bg-default">
         <div class="container">
-            <h3>{{ __('Get in Touch') }}</h3>
-            <form class="rd-form rd-mailform form-lg" method="post" action="{{ route('contact.store') }}">
-                @csrf
-                <div class="row row-30">
-                    <div class="col-lg-4">
-                        <div class="form-wrap form-wrap-icon">
-                            <input class="form-input" id="contact-name" type="text" name="name" required>
-                            <label class="form-label" for="contact-name">{{ __('Name') }}</label>
-                            <div class="icon form-icon mdi mdi-account-outline text-primary"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-wrap form-wrap-icon">
-                            <input class="form-input" id="contact-phone" type="text" name="phone" required>
-                            <label class="form-label" for="contact-phone">{{ __('Phone') }}</label>
-                            <div class="icon form-icon mdi mdi-phone text-primary"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-wrap form-wrap-icon">
-                            <input class="form-input" id="contact-email" type="email" name="email" required>
-                            <label class="form-label" for="contact-email">{{ __('E-mail') }}</label>
-                            <div class="icon form-icon mdi mdi-email-outline text-primary"></div>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-wrap form-wrap-icon">
-                            <label class="form-label" for="contact-message">{{ __('Message') }}</label>
-                            <textarea class="form-input" id="contact-message" name="message" required></textarea>
-                            <div class="icon form-icon mdi mdi-message-outline text-primary"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-wrap form-wrap-button">
-                    <button class="button button-lg button-primary" type="submit">{{ __('Send') }}</button>
-                </div>
-            </form>
+            @include('partials.contact-form', [
+                'layout' => 'default',
+                'title' => __('Get in Touch'),
+                'showSubject' => true,
+                'showCategory' => true,
+                'messageRows' => '6'
+            ])
         </div>
     </section>
 @endsection

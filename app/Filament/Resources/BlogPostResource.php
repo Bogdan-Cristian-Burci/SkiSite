@@ -131,12 +131,8 @@ class BlogPostResource extends Resource
                                     ->required(),
                                 Forms\Components\Textarea::make('description'),
                             ]),
-                        Forms\Components\Select::make('user_id')
-                            ->label('Author')
-                            ->relationship('user', 'name')
-                            ->default(auth()->id())
-                            ->required()
-                            ->disabled(fn () => !auth()->user()?->hasRole('admin')),
+                        Forms\Components\Hidden::make('user_id')
+                            ->default(auth()->id()),
                     ])->columns(2),
             ]);
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\BlogPostController;
 use App\Http\Controllers\CampController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HeroSliderController;
 use App\Http\Controllers\IndexController;
@@ -117,9 +118,17 @@ Route::get('/privacy-policy
 })->name('privacy-policy.fallback');
 
 // Contact form submission
-Route::post('contact-store', function (){
-    // TODO: Implement contact form handling
-})->name('contact.store');
+Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Comment submission (requires authentication)
+Route::post('blog/{blogPost}/comments', [\App\Http\Controllers\CommentController::class, 'webStore'])
+    ->middleware('auth')
+    ->name('comments.store');
+
+// Camp booking (requires authentication)
+Route::post('camps/{camp}/book', [CampController::class, 'book'])
+    ->middleware('auth')
+    ->name('camps.book');
 
 // Language switching
 Route::get('lang/{locale}', function ($locale) {
@@ -279,7 +288,24 @@ Route::middleware('instructor')->group(function () {
     Route::get('/dashboard', function () {
         $user = auth()->user();
         if ($user->hasRole('admin')) {
-            return view('dashboard.admin');
+            // Get all appointments with relationships
+            $appointments = \App\Models\Appointment::with(['user', 'skiInstructor'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+            
+            // Get all camp bookings - get users who have camp bookings
+            $campBookings = \App\Models\User::whereHas('camps')->with(['camps' => function($query) {
+                $query->withPivot(['number_of_adults', 'number_of_children', 'created_at']);
+            }])->get()
+            ->flatMap(function($user) {
+                return $user->camps->map(function($camp) use ($user) {
+                    $camp->user = $user;
+                    return $camp;
+                });
+            })
+            ->sortByDesc('pivot.created_at');
+            
+            return view('dashboard.admin', compact('appointments', 'campBookings'));
         } elseif ($user->hasRole('instructor')) {
             return view('dashboard.instructor');
         }

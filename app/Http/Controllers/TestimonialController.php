@@ -25,10 +25,6 @@ class TestimonialController extends Controller
         $this->authorize('create', Testimonial::class);
 
         $data = $request->validated();
-        
-        if ($request->hasFile('author_image')) {
-            $data['author_image_path'] = $this->handleImageUpload($request->file('author_image'), 'testimonials');
-        }
 
         $testimonial = Testimonial::create($data);
 
@@ -47,11 +43,6 @@ class TestimonialController extends Controller
         $this->authorize('update', $testimonial);
 
         $data = $request->validated();
-        
-        if ($request->hasFile('author_image')) {
-            $this->deleteImage($testimonial->author_image_path);
-            $data['author_image_path'] = $this->handleImageUpload($request->file('author_image'), 'testimonials');
-        }
 
         $testimonial->update($data);
 
@@ -62,7 +53,6 @@ class TestimonialController extends Controller
     {
         $this->authorize('delete', $testimonial);
 
-        $this->deleteImage($testimonial->author_image_path);
         $testimonial->delete();
 
         return response()->json(['message' => 'Testimonial deleted successfully']);

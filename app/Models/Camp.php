@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
@@ -54,6 +55,13 @@ class Camp extends Model
             'accommodation_info' => 'array',
             'article_content' => 'array',
         ];
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot(['number_of_adults', 'number_of_children'])
+            ->withTimestamps();
     }
 
     protected static function boot()

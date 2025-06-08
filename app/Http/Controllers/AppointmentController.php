@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AppointmentRequest;
+use App\Http\Requests\AppoitmentRequest as AppointmentRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentCreatedAdmin;
+use App\Mail\AppointmentCreatedUser;
 
 class AppointmentController extends Controller
 {
@@ -25,6 +28,13 @@ class AppointmentController extends Controller
 
         $data = $request->validated();
         $data['user_id'] = auth()->id();
+
+        //Temporary add ski instructor ID for demo purposes
+        if (isset($data['ski_instructor_id'])) {
+            $data['ski_instructor_id'] = $data['ski_instructor_id'];
+        } else {
+            $data['ski_instructor_id'] = 1;
+        }
 
         $appointment = Appointment::create($data);
 
@@ -65,10 +75,33 @@ class AppointmentController extends Controller
     public function webStore(AppointmentRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->id() ?? null; // Handle guest appointments
-        
+        $data['user_id'] = auth()->id();
+
         $appointment = Appointment::create($data);
-        
-        return redirect()->back()->with('success', 'Appointment created successfully!');
+        $appointment->load('user');
+
+        // Send email notifications
+        try {
+            // Send email to admin
+            Mail::to(config('appointment.email.admin_email'))
+                ->send(new AppointmentCreatedAdmin($appointment));
+
+            // Send email to user
+            Mail::to($appointment->user->email)
+                ->send(new AppointmentCreatedUser($appointment));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send appointment emails: ' . $e->getMessage());
+        }
+
+        // Check if it's an AJAX request
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Appointment request submitted successfully! We will contact you within ' . config('appointment.email.reply_time_hours', 24) . ' hours.',
+                'appointment' => new AppointmentResource($appointment)
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Appointment request submitted successfully! We will contact you within ' . config('appointment.email.reply_time_hours') . ' hours.');
     }
 }

@@ -19,7 +19,7 @@ class HeroSliderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-bar';
 
-    protected static ?string $navigationGroup = 'Website';
+    protected static ?string $navigationGroup = 'Home Page Content';
 
     public static function form(Form $form): Form
     {

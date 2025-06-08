@@ -13,16 +13,28 @@
         <div class="container">
             <div class="row row-50 justify-content-center align-items-center justify-content-xl-around">
                 <div class="col-md-10 col-lg-6">
-                    <h3>{{ __('Teaching Skiing Since 1999') }}</h3>
+                    @if($company && $company->about_title)
+                        <h3>{{ $company->about_title }}</h3>
+                    @else
+                        <h3>{{ __('Teaching Skiing Since 1999') }}</h3>
+                    @endif
                     <div class="block-2 mt-20 mt-md-30 mt-lg-50">
-                        <p>{{ __('Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.') }}</p>
-                        <p>{{ __('Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.') }}</p>
+                        @if($company && $company->about_content)
+                            {!! $company->about_content !!}
+                        @else
+                            <p>{{ __('Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.') }}</p>
+                            <p>{{ __('Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.') }}</p>
+                        @endif
                     </div>
                     <a class="button-square btn-md button button-primary mt-lg-40" href="{{ localized_route('contact') }}">{{ __('Book Now') }}</a>
                 </div>
                 <div class="col-md-10 col-lg-5">
                     <figure class="figure-1" role="presentation">
-                        <img src="{{ asset('images/about-1-461x450.png') }}" alt="" width="461" height="450"/>
+                        @if($company && $company->about_image_path)
+                            <img src="{{ asset('storage/'.$company->about_image_path) }}" alt="{{ $company->about_title ?? __('About Us') }}" width="461" height="450"/>
+                        @else
+                            <img src="{{ asset('images/about-1-461x450.png') }}" alt="" width="461" height="450"/>
+                        @endif
                     </figure>
                 </div>
             </div>

@@ -1,0 +1,113 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\DividingSectionResource\Pages;
+use App\Filament\Resources\DividingSectionResource\RelationManagers;
+use App\Models\DividingSection;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class DividingSectionResource extends Resource
+{
+    protected static ?string $model = DividingSection::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
+    protected static ?string $navigationLabel = 'Dividing Section';
+    protected static ?string $navigationGroup = 'Home Page Content';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('title.en')
+                    ->label('Title (English)')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('title.ro')
+                    ->label('Title (Romanian)')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('subtitle.en')
+                    ->label('Subtitle (English)')
+                    ->required()
+                    ->maxLength(1000),
+                Forms\Components\Textarea::make('subtitle.ro')
+                    ->label('Subtitle (Romanian)')
+                    ->required()
+                    ->maxLength(1000),
+                Forms\Components\FileUpload::make('image_path')
+                    ->label('Background Image')
+                    ->image()
+                    ->required()
+                    ->directory('dividing-sections')
+                    ->disk('public'),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Active')
+                    ->default(true),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Title')
+                    ->getStateUsing(function ($record) {
+                        return $record->getTranslation('title', app()->getLocale());
+                    })
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('subtitle')
+                    ->label('Subtitle')
+                    ->getStateUsing(function ($record) {
+                        return $record->getTranslation('subtitle', app()->getLocale());
+                    })
+                    ->limit(50)
+                    ->searchable(),
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->label('Image')
+                    ->disk('public'),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Active')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListDividingSections::route('/'),
+            'create' => Pages\CreateDividingSection::route('/create'),
+            'edit' => Pages\EditDividingSection::route('/{record}/edit'),
+        ];
+    }
+}

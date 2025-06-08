@@ -33,6 +33,11 @@ class BlogPost extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function comments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     protected function casts(): array
     {
         return [

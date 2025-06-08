@@ -110,9 +110,21 @@
 
                         <!-- Book Now Button -->
                         <div class="text-center mt-4">
-                            <a href="{{ localized_route('contact') }}" class="button button-lg button-primary">
-                                {{ __('Book This Camp') }}
-                            </a>
+                            @auth
+                                <form action="{{ route('camps.book', $camp->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="button button-lg button-primary">
+                                        {{ __('Book This Camp') }}
+                                    </button>
+                                </form>
+                            @else
+                                <div class="booking-message mb-3">
+                                    <p class="text-muted mb-2">{{ __('If you want to book this camp, please login.') }}</p>
+                                </div>
+                                <a href="{{ localized_route('login') }}" class="button button-lg button-secondary">
+                                    {{ __('Login to Book') }}
+                                </a>
+                            @endauth
                         </div>
                     </article>
                 </div>

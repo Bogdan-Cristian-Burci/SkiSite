@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row row-40 row-xl-50 flex-lg-row-reverse">
                 <div class="col-lg-4">
-                    @include('partials.contact-form')
+                    @include('partials.appointment-form')
                 </div>
                 <div class="col-lg-8">
                     <article class="post-info">
@@ -30,7 +30,6 @@
                                 <td>{{ __('What’s Included') }}</td>
                                 <td>
                                     <div class="row row-10 block-3">
-
                                             <div class="col-md-12">
                                                 <ul class="list-marked list-two-cols" style="display:flex; flex-wrap: wrap;">
                                                     @foreach($skiProgram->included_services as $item)
@@ -38,7 +37,6 @@
                                                     @endforeach
                                                 </ul>
                                             </div>
-
                                     </div>
                                 </td>
                             </tr>

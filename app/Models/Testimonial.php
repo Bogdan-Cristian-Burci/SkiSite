@@ -14,9 +14,7 @@ class Testimonial extends Model
 
     protected $fillable = [
         'author_name',
-        'author_image_path',
         'content',
-        'social_link',
         'approved_status',
     ];
 
@@ -25,5 +23,10 @@ class Testimonial extends Model
         return [
             'approved_status' => 'boolean',
         ];
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->diffForHumans();
     }
 }

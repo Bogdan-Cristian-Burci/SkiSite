@@ -5,9 +5,15 @@
             <div class="footer-classic-layout justify-content-sm-around justify-content-md-between">
                 <div class="footer-classic-layout-item">
                     <!-- Brand -->
+                    @if(!empty($footerCompany->logo_path))
                     <a class="brand" href="{{ localized_route('home') }}">
                         <img class="brand-logo" src="{{ asset('storage/' . $footerCompany->logo_path) }}" alt="{{ config('app.name') }}" style="height: 80px;"/>
                     </a>
+                    @else
+                        <a class="brand" href="{{ route('home') }}">
+                            <img class="brand-logo" src="{{ asset('images/logo-default-306x104.png') }}" alt="{{ config('app.name') }}" width="153" height="52"/>
+                        </a>
+                    @endif
                     <div class="footer-classic-item-block footer-classic-item-block-1">
                         <p class="text-white-07 block-1">
                             {{ $footerCompany?->description ?? config('site.description', 'SkiUp ski school provides a variety of courses and activities for learners of any age and skill level. With us, you\'ll be skiing confidently in no time.') }}
@@ -32,6 +38,7 @@
                             <li><a href="{{ localized_route('contact') }}">Contacts</a></li>
                             <li><a href="{{ localized_route('contact') }}">Book a Lesson</a></li>
                         </ul>
+                        @if(!empty($footerCompany->socials))
                         <ul class="list-inline list-inline-md">
                             @foreach($footerCompany->socials as $socialLink)
                                 @if(isset($socialLink['platform']) && isset($socialLink['url']))
@@ -67,6 +74,7 @@
                                 @endif
                             @endforeach
                         </ul>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -81,7 +89,9 @@
                 <span>&copy;&nbsp;</span>
                 <span class="copyright-year">{{ date('Y') }}</span>
                 <span>&nbsp;</span>
-                <span>{{ $footerCompany->name }}</span>
+                @if(!empty($footerCompany->name))
+                    <span>{{ $footerCompany->name }}</span>
+                @endif
                 <span>. {{__("All rights reserved")}}.&nbsp;</span>
                 <a href="{{ localized_route('privacy-policy') }}">{{__("Privacy Policy")}}</a>
             </p>
