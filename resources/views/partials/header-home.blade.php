@@ -262,9 +262,6 @@ use Illuminate\Support\Facades\Storage;
                                 <li class="rd-dropdown-item">
                                     <a class="rd-dropdown-link" href="{{ localized_route('testimonials') }}">{{__('Testimonials')}}</a>
                                 </li>
-                                <li class="rd-dropdown-item">
-                                    <a class="rd-dropdown-link" href="{{ localized_route('pricing') }}">{{__('Pricing')}}</a>
-                                </li>
                             </ul>
                         </li>
                         <li class="rd-nav-item {{ Request::routeIs('programs*') ? 'active' : '' }}">
@@ -276,6 +273,9 @@ use Illuminate\Support\Facades\Storage;
                                     </li>
                                 @endforeach
                             </ul>
+                        </li>
+                        <li class="rd-nav-item {{ Request::routeIs('camps') ? 'active' : '' }}">
+                            <a class="rd-nav-link" href="{{ localized_route('camps') }}">{{__('Camps')}}</a>
                         </li>
                         <li class="rd-nav-item {{ Request::routeIs('gallery') ? 'active' : '' }}">
                             <a class="rd-nav-link" href="{{ localized_route('gallery') }}">{{__('Gallery')}}</a>

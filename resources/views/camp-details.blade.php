@@ -47,11 +47,6 @@ use Illuminate\Support\Facades\Storage;
                                         <td>
                                             <span class="icon mdi mdi-map-marker"></span>
                                             {{ $camp->getTranslation('location', app()->getLocale()) }}
-                                            @if($camp->latitude && $camp->longitude)
-                                                <a href="https://maps.google.com/?q={{ $camp->latitude }},{{ $camp->longitude }}" target="_blank" class="ml-2">
-                                                    <small>({{ __('View on Map') }})</small>
-                                                </a>
-                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -138,7 +133,7 @@ use Illuminate\Support\Facades\Storage;
                         <!-- Camp Registration Form -->
                         <div class="camp-registration-section mt-4">
                             @include('partials.camp-registration-form', [
-                                'camp' => $camp, 
+                                'camp' => $camp,
                                 'userRegistration' => $userRegistration,
                                 'takenSpots' => $takenSpots,
                                 'availableSpots' => $availableSpots

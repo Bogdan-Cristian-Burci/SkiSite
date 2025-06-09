@@ -41,7 +41,6 @@ Route::group(['prefix' => 'en', 'middleware' => 'setlocale'], function () {
     Route::get('regulations', [RegulationController::class, 'webIndex'])->name('en.regulations');
     Route::get('regulations/{slug}', [RegulationController::class, 'webShow'])->name('en.regulations.show');
     Route::get('contact', [ContactController::class,'webIndex'])->name('en.contact');
-    Route::get('pricing', function () { return view('pricing'); })->name('en.pricing');
     Route::get('privacy-policy', function () { return view('privacy-policy'); })->name('en.privacy-policy');
 });
 
@@ -62,7 +61,6 @@ Route::group(['middleware' => 'setlocale'], function () {
     Route::get('regulamente', [RegulationController::class, 'webIndex'])->name('ro.regulations');
     Route::get('regulamente/{slug}', [RegulationController::class, 'webShow'])->name('ro.regulations.show');
     Route::get('contact', [ContactController::class,'webIndex'])->name('ro.contact');
-    Route::get('tarife', function () { return view('pricing'); })->name('ro.pricing');
     Route::get('politica-confidentialitate', function () { return view('privacy-policy'); })->name('ro.privacy-policy');
 });
 
@@ -364,11 +362,11 @@ Route::prefix('api')->group(function () {
 // Storage file serving route (workaround for Herd nginx config)
 Route::get('storage/{path}', function ($path) {
     $filePath = storage_path('app/public/' . $path);
-    
+
     if (!file_exists($filePath)) {
         abort(404);
     }
-    
+
     $mimeType = mime_content_type($filePath);
     return response()->file($filePath, [
         'Content-Type' => $mimeType,

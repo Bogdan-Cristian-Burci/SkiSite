@@ -25,7 +25,7 @@ class SkiProgramResource extends JsonResource
             'image_path' => $this->image_path,
             'image_url' => $this->image_path ? Storage::disk('public')->url($this->image_path) : null,
             'gallery' => $this->gallery,
-            'gallery_urls' => $this->gallery ? collect($this->gallery)->map(fn($path) => Storage::disk('public')->url($path))->toArray() : [],
+            'gallery_urls' => $this->gallery ? collect($this->gallery)->map(fn($path) => asset('storage/' . $path))->toArray() : [],
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

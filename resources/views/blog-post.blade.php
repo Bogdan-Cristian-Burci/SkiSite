@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Storage;
                 <div class="blog-layout-main">
                     <div class="blog-layout-main-item">
                         <article class="post-corporate">
-                            <img class="post-corporate-image" src="{{ asset('/storage/'.$blogPost->image_path) }}" alt="" width="768" height="396"/>
+                            <img class="post-corporate-image" src="{{ Storage::disk('public')->url($blogPost->image_path) }}" alt="" width="768" height="396"/>
                             <ul class="post-corporate-meta">
                                 <li>
                                     <span class="icon mdi mdi-calendar-today"></span>
