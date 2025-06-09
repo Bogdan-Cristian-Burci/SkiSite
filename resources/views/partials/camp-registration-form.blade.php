@@ -319,6 +319,9 @@
     .cancel-text{
         color: white;
     }
+    .mdi-close{
+        color: white;
+    }
 }
 
 .cancel-registration-icon i {
