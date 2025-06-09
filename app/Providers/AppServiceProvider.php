@@ -4,8 +4,11 @@ namespace App\Providers;
 
 use App\Models\HeaderImage;
 use App\Models\Regulation;
+use App\Models\SkiInstructor;
 use App\Models\SkiProgram;
 use App\Models\Company;
+use App\Models\WhyChooseUs;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -35,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
                 ->first();
 
             $imageUrl = $headerImage
-                ? asset('storage/' . $headerImage->image_path)
+                ? Storage::disk('public')->url($headerImage->image_path)
                 : asset('images/bg-image-1.jpg');
 
 

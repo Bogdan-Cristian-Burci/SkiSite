@@ -6,6 +6,7 @@ use App\Http\Requests\ContactRequest;
 use App\Mail\ContactReceived;
 use App\Mail\ContactNotification;
 use App\Models\Contact;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
@@ -28,7 +29,7 @@ class ContactController extends Controller
                 'success' => true,
                 'message' => __('Thank you for contacting us! We will get back to you soon.'),
             ]);
-            
+
         } catch (\Exception $e) {
             \Log::error('Contact form submission failed: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
@@ -36,11 +37,18 @@ class ContactController extends Controller
                 'trace' => $e->getTraceAsString(),
                 'request_data' => $request->validated()
             ]);
-            
+
             return response()->json([
                 'success' => false,
                 'message' => __('Something went wrong. Please try again.'),
             ], 500);
         }
+    }
+
+    public function webIndex()
+    {
+        $company= Company::first();
+
+        return view('contact', compact('company'));
     }
 }

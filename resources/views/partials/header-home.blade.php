@@ -1,3 +1,6 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 <!-- Page Header-->
 <header class="section page-header page-header-2 section-custom-1-ally">
     <!-- RD Navbar-->
@@ -114,7 +117,7 @@
                         <div class="rd-navbar-brand">
                             @if(!empty($company->logo_path))
                             <a class="brand" href="{{ route('home') }}">
-                                <img class="brand-logo" src="{{ asset('storage/' . $company->logo_path) }}" alt="{{ config('app.name') }}" width="35" />
+                                <img class="brand-logo" src="{{ Storage::disk('public')->url($company->logo_path) }}" alt="{{ config('app.name') }}" width="35" />
                             </a>
                             @endif
                         </div>

@@ -1,4 +1,7 @@
 {{-- resources/views/blog-post.blade.php --}}
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('layouts.app')
 
 @section('title', $blogPost->title ?? __('Blog Post'))
@@ -35,8 +38,8 @@
                             @if($blogPost->gallery)
                                 <div class="post-corporate-gallery" data-lightgallery="group">
                                     @foreach($blogPost->gallery as $image)
-                                        <a class="post-corporate-thumbnail" href="{{ asset('storage/'.$image->image_path) }}" data-lightgallery="item">
-                                            <img class="post-corporate-thumbnail-image" src="{{ asset('storage/'.$image->image_path) }}" alt=""/>
+                                        <a class="post-corporate-thumbnail" href="{{ Storage::disk('public')->url($image->image_path) }}" data-lightgallery="item">
+                                            <img class="post-corporate-thumbnail-image" src="{{ Storage::disk('public')->url($image->image_path) }}" alt=""/>
                                         </a>
                                     @endforeach
                                 </div>

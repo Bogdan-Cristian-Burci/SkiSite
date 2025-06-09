@@ -1,4 +1,7 @@
 {{-- resources/views/camps.blade.php --}}
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('layouts.app')
 
 @section('title', __('Camps'))
@@ -21,7 +24,7 @@
                                 <article class="tour-classic camp-listing-card">
                                     <div class="tour-classic-media">
                                         <a class="tour-classic-figure" href="{{ localized_route('camps.show', $camp->getTranslation('slug', app()->getLocale())) }}">
-                                            <img class="tour-classic-image" src="{{ asset('storage/' . $camp->image_path) }}" alt="{{ $camp->getTranslation('title', app()->getLocale()) }}" width="365" height="248"/>
+                                            <img class="tour-classic-image" src="{{ Storage::disk('public')->url($camp->image_path) }}" alt="{{ $camp->getTranslation('title', app()->getLocale()) }}" width="365" height="248"/>
                                         </a>
                                         <div class="camp-listing-dates">
                                             {{ $camp->start_date->format('M d') }} - {{ $camp->end_date->format('M d, Y') }}

@@ -108,14 +108,14 @@
             @if($showSubject)
             <div class="col-lg-12">
                 <div class="form-wrap form-wrap-icon">
-                    <input class="form-input" id="{{ $formId }}-subject" type="text" name="subject" value="{{ old('subject') }}" required placeholder="{{__('Please enter a subject.')}}">
+                    <input class="form-input" id="{{ $formId }}-subject" type="text" name="subject" value="{{ old('subject') }}" required placeholder="{{ __('Please enter a subject.') }}">
                     <div class="icon form-icon mdi mdi-text-subject text-primary"></div>
                 </div>
             </div>
             @endif
             <div class="col-12">
                 <div class="form-wrap form-wrap-icon">
-                    <textarea class="form-input" id="{{ $formId }}-message" name="message" rows="{{ $messageRows }}" required placeholder="__('Please enter your message.')">{{ old('message') }}</textarea>
+                    <textarea class="form-input" id="{{ $formId }}-message" name="message" rows="{{ $messageRows }}" required placeholder="{{__('Please enter your message.')}}">{{ old('message') }}</textarea>
                     <div class="icon form-icon mdi mdi-message-outline text-primary"></div>
                 </div>
             </div>

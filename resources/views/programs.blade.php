@@ -1,4 +1,7 @@
 {{-- resources/views/programs.blade.php --}}
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('layouts.app')
 
 @section('title', __('Programs'))
@@ -21,7 +24,7 @@
                                 <article class="tour-classic">
                                     <div class="tour-classic-media">
                                         <a class="tour-classic-figure" href="{{ localized_route('programs.show', ['slug' => $program->getTranslation('slug', app()->getLocale())]) }}">
-                                            <img class="tour-classic-image" src="{{ asset('storage/'.$program->image_path) }}" alt="" width="365" height="248"/>
+                                            <img class="tour-classic-image" src="{{ Storage::disk('public')->url($program->image_path) }}" alt="" width="365" height="248"/>
                                         </a>
                                     </div>
                                     <div class="tour-classic-body">

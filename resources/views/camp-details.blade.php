@@ -1,4 +1,7 @@
 {{-- resources/views/camp-details.blade.php --}}
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('layouts.app')
 
 @section('title', $camp->getTranslation('title', app()->getLocale()) ?? __('Camp Details'))
@@ -17,7 +20,7 @@
 
                         <!-- Camp Hero Image -->
                         <div class="camp-hero-image mb-4">
-                            <img src="{{ asset('storage/' . $camp->image_path) }}" alt="{{ $camp->getTranslation('title', app()->getLocale()) }}" class="img-fluid rounded" style="width: 100%; height: 400px; object-fit: cover;">
+                            <img src="{{ Storage::disk('public')->url($camp->image_path) }}" alt="{{ $camp->getTranslation('title', app()->getLocale()) }}" class="img-fluid rounded" style="width: 100%; height: 400px; object-fit: cover;">
                         </div>
 
                         <!-- Camp Info Table -->

@@ -40,7 +40,7 @@ Route::group(['prefix' => 'en', 'middleware' => 'setlocale'], function () {
     Route::get('camps/{slug}', [CampController::class, 'webShow'])->name('en.camps.show');
     Route::get('regulations', [RegulationController::class, 'webIndex'])->name('en.regulations');
     Route::get('regulations/{slug}', [RegulationController::class, 'webShow'])->name('en.regulations.show');
-    Route::get('contact', function () { return view('contact'); })->name('en.contact');
+    Route::get('contact', [ContactController::class,'webIndex'])->name('en.contact');
     Route::get('pricing', function () { return view('pricing'); })->name('en.pricing');
     Route::get('privacy-policy', function () { return view('privacy-policy'); })->name('en.privacy-policy');
 });
@@ -61,7 +61,7 @@ Route::group(['middleware' => 'setlocale'], function () {
     Route::get('tabere/{slug}', [CampController::class, 'webShow'])->name('ro.camps.show');
     Route::get('regulamente', [RegulationController::class, 'webIndex'])->name('ro.regulations');
     Route::get('regulamente/{slug}', [RegulationController::class, 'webShow'])->name('ro.regulations.show');
-    Route::get('contact', function () { return view('contact'); })->name('ro.contact');
+    Route::get('contact', [ContactController::class,'webIndex'])->name('ro.contact');
     Route::get('tarife', function () { return view('pricing'); })->name('ro.pricing');
     Route::get('politica-confidentialitate', function () { return view('privacy-policy'); })->name('ro.privacy-policy');
 });
@@ -102,9 +102,7 @@ Route::get('/appointments/create', [AppointmentController::class, 'webCreate'])-
 Route::post('/appointments', [AppointmentController::class, 'webStore'])->name('appointments.store.fallback');
 
 // Contact route
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact.fallback');
+Route::get('/contact', [ContactController::class, 'webIndex'])->name('contact.fallback');
 
 // Pricing route
 Route::get('/pricing', function () {
@@ -143,7 +141,7 @@ Route::get('lang/{locale}', function ($locale) {
         }
 
         $currentPath = parse_url($referer, PHP_URL_PATH);
-        
+
         // Helper function to find content by slug and get translated slug
         $findTranslatedSlug = function($modelClass, $currentSlug, $currentLocale, $targetLocale) {
             try {
@@ -158,7 +156,7 @@ Route::get('lang/{locale}', function ($locale) {
             }
             return $currentSlug;
         };
-        
+
         // Map current path to target language route
         try {
             if ($locale === 'ro') {
@@ -292,15 +290,15 @@ Route::middleware('instructor')->group(function () {
             $appointments = \App\Models\Appointment::with(['user', 'skiInstructor'])
                 ->orderBy('created_at', 'desc')
                 ->get();
-            
+
             // Calculate statistics
             $thisMonthAppointments = \App\Models\Appointment::whereMonth('created_at', now()->month)
                 ->whereYear('created_at', now()->year)
                 ->count();
-                
+
             $upcomingAppointments = \App\Models\Appointment::where('start_date', '>=', now()->format('Y-m-d'))
                 ->count();
-            
+
             // Get all camp bookings - get users who have camp bookings
             $campBookings = \App\Models\User::whereHas('camps')->with(['camps' => function($query) {
                 $query->withPivot(['number_of_adults', 'number_of_children', 'created_at']);
@@ -312,7 +310,7 @@ Route::middleware('instructor')->group(function () {
                 });
             })
             ->sortByDesc('pivot.created_at');
-            
+
             return view('dashboard.admin', compact('appointments', 'campBookings', 'thisMonthAppointments', 'upcomingAppointments'));
         } elseif ($user->hasRole('instructor')) {
             return view('dashboard.instructor');

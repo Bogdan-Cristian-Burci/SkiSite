@@ -1,4 +1,7 @@
 {{-- resources/views/program-page.blade.php --}}
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('layouts.app')
 
 @section('title', $skiProgram->title ?? __('Program'))
@@ -46,8 +49,8 @@
                         <div class="row row-6 row-x-6" data-lightgallery="group">
                             @foreach($skiProgram->gallery as $image)
                                 <div class="col-4">
-                                    <a class="thumbnail-light" href="{{ asset('storage/'.$image) }}" data-lightgallery="item">
-                                        <img class="thumbnail-light-image" src="{{ asset('storage/'.$image) }}" alt="" width="355" height="359"/>
+                                    <a class="thumbnail-light" href="{{ Storage::disk('public')->url($image) }}" data-lightgallery="item">
+                                        <img class="thumbnail-light-image" src="{{ Storage::disk('public')->url($image) }}" alt="" width="355" height="359"/>
                                     </a>
                                 </div>
                             @endforeach

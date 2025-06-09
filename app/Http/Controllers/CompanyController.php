@@ -6,6 +6,8 @@ use App\Http\Requests\CompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Http\Traits\HandlesImages;
 use App\Models\Company;
+use App\Models\SkiInstructor;
+use App\Models\WhyChooseUs;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CompanyController extends Controller
@@ -24,7 +26,7 @@ class CompanyController extends Controller
         $this->authorize('create', Company::class);
 
         $data = $request->validated();
-        
+
         if ($request->hasFile('logo')) {
             $data['logo_path'] = $this->handleImageUpload($request->file('logo'), 'company/logos');
         }
@@ -46,7 +48,7 @@ class CompanyController extends Controller
         $this->authorize('update', $company);
 
         $data = $request->validated();
-        
+
         if ($request->hasFile('logo')) {
             $this->deleteImage($company->logo_path);
             $data['logo_path'] = $this->handleImageUpload($request->file('logo'), 'company/logos');
@@ -70,6 +72,9 @@ class CompanyController extends Controller
     public function webIndex()
     {
         $company = Company::first();
-        return view('about', compact('company'));
+        $team = SkiInstructor::all();
+        $whyChooseUs = WhyChooseUs::all();
+
+        return view('about', compact('company','team', 'whyChooseUs'));
     }
 }

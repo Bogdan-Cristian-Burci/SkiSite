@@ -30,7 +30,7 @@ class IndexController extends Controller
 
         // Get new home page sections
         $popularDestinations = PopularDestination::active()->ordered()->get();
-        $whyChooseUs = WhyChooseUs::active()->ordered()->get();
+        $whyChooseUs = WhyChooseUs::active()->ordered()->take(3)->get();
         $dividingSection = DividingSection::active()->first();
         $company = Company::first();
         // Set locale for each model to get proper translations

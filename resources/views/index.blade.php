@@ -1,3 +1,6 @@
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('layouts.app')
 
 @section('title', 'Home - SkiUp Ski School')
@@ -11,7 +14,7 @@
     <div class="swiper-container swiper-slider swiper-slider-1 context-dark" data-loop="false" data-autoplay="4000" data-simulate-touch="false" data-slide-effect="fade" data-nav="true">
         <div class="swiper-wrapper">
             @foreach($heroSliders as $slider)
-                <div class="swiper-slide" data-slide-bg="{{ asset('storage/'.$slider->image_path) }}">
+                <div class="swiper-slide" data-slide-bg="{{ Storage::disk('public')->url($slider->image_path) }}">
                     <div class="container">
                         <div class="row">
                             <div class="col-xl-4 col-lg-7">
@@ -67,7 +70,7 @@
                             @foreach($skiPrograms as $skiProgram)
                                 <div class="col-xs-6 col-sm-6 wow fadeIn" data-wow-delay="{{ $loop->index * 0.05 }}s">
                                     <article class="tour-minimal context-dark">
-                                        <div class="tour-minimal-inner" style="background-image: url({{ asset('storage/'.$skiProgram->image_path) }});">
+                                        <div class="tour-minimal-inner" style="background-image: url({{ Storage::disk('public')->url($skiProgram->image_path) }});">
                                             <div class="tour-minimal-header">
                                             </div>
                                             <div class="tour-minimal-main">
@@ -97,7 +100,7 @@
                         <article class="tour-modern mt-30 mt-xl-60 wow fadeIn" data-wow-delay="{{ $loop->index * 0.05 }}s">
                             <div class="tour-modern-media">
                                 <a class="tour-modern-figure" href="{{ localized_route('blog.show', $blog->getTranslation('slug', app()->getLocale()) ?: $blog->id) }}">
-                                    <img class="tour-modern-image" src="{{ asset('storage/'.$blog->image_path) }}" alt="{{$blog->getTranslation('title', app()->getLocale())}}" width="358" height="450"/>
+                                    <img class="tour-modern-image" src="{{ Storage::disk('public')->url($blog->image_path) }}" alt="{{$blog->getTranslation('title', app()->getLocale())}}" width="358" height="450"/>
                                 </a>
                             </div>
                             <div class="tour-modern-main">
@@ -114,7 +117,7 @@
                     <div class="row row-40 row-md-50 row-xxl-80">
                         <div class="col-md-6 col-lg-12">
                             @if($popularDestinations->count() > 0)
-                                <h3 class="text-center text-sm-left wow fadeIn">Popular Destinations</h3>
+                                <h3 class="text-center text-sm-left wow fadeIn">{{ __('Popular Destinations') }}</h3>
                                 <article class="box-8 mt-30 mt-xl-60 wow fadeIn" data-wow-delay=".1s">
                                     <ul class="list-marked__creative">
                                         @foreach($popularDestinations as $destination)
@@ -126,7 +129,7 @@
                         </div>
                         <div class="col-md-6 col-lg-12">
                             @if($whyChooseUs->count() > 0)
-                                <h3 class="text-center text-sm-left wow fadeIn">Why choose us</h3>
+                                <h3 class="text-center text-sm-left wow fadeIn">{{__("Why choose us")}}</h3>
                                 <ul class="row list-group-2 row-20 row-md-30 mt-30 mt-xl-50 advantages-list">
                                     @foreach($whyChooseUs as $index => $item)
                                         <li class="col-sm-6 col-md-12 wow fadeIn" data-wow-delay="{{ ($index + 1) * 0.05 }}s">
@@ -150,7 +153,7 @@
 
     <!-- Join Our School-->
     @if($dividingSection)
-        <section class="section section-md section-md-1 bg-image bg-overlay-3 context-dark text-center" style="background-image: url({{ asset('storage/'.$dividingSection->image_path) }});">
+        <section class="section section-md section-md-1 bg-image bg-overlay-3 context-dark text-center" style="background-image: url({{ Storage::disk('public')->url($dividingSection->image_path) }});">
             <div class="container">
                 <h2 class="text-1 mt-xl-40 wow fadeIn" data-wow-delay=".025s">{{ $dividingSection->title }}</h2>
                 <p class="block-8 mt-20 mt-xl-30 wow fadeIn" data-wow-delay=".05s">{{ $dividingSection->subtitle }}</p>
@@ -172,7 +175,7 @@
                     <div class="col-sm-6 col-lg-4 wow fadeIn" data-wow-delay="{{ $loop->index * 0.05 }}s">
                         <article class="post-classic camp-card">
                             <a class="post-classic-figure" href="{{ localized_route('camps.show', $camp->getTranslation('slug', app()->getLocale())) }}">
-                                <img class="post-classic-image" src="{{ asset('storage/' . $camp->image_path) }}" alt="{{ $camp->getTranslation('title', app()->getLocale()) }}" width="339" height="251">
+                                <img class="post-classic-image" src="{{ Storage::disk('public')->url($camp->image_path) }}" alt="{{ $camp->getTranslation('title', app()->getLocale()) }}" width="339" height="251">
                             </a>
                             <div class="post-classic-divider"></div>
                             <div class="camp-card-content">
@@ -259,7 +262,7 @@
                             <div class="col-sm-6 col-lg-12 wow fadeIn" data-wow-delay="{{ $loop->index * 0.05 }}s">
                                 <!-- Profile Light-->
                                 <article class="profile-light">
-                                    <img class="profile-light-image" src="{{ asset('storage/'.$skiInstructor->image_path) }}" alt="{{$skiInstructor->user->name}}" style="width:95px;height:95px;border: 3px solid lightblue;"/>
+                                    <img class="profile-light-image" src="{{ Storage::disk('public')->url($skiInstructor->image_path) }}" alt="{{$skiInstructor->user->name}}" style="width:95px;height:95px;border: 3px solid lightblue;"/>
                                     <div class="profile-light-main">
                                         <p class="profile-light-position">{{ $skiInstructor->position }}</p>
                                         <h5 class="profile-light-name">{{ $skiInstructor->user->name }}</h5>

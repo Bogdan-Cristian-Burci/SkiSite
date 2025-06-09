@@ -1,4 +1,7 @@
 {{-- resources/views/gallery.blade.php --}}
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('layouts.app')
 
 @section('title', __('Gallery'))
@@ -14,9 +17,9 @@
                 {{-- Example static images, replace with dynamic content as needed --}}
                 @foreach($galleries as $gallery)
                     <div class="col-md-4 col-sm-6 col-12">
-                        <a class="thumbnail-light" href="{{ asset('storage/'.$gallery->image_path) }}" data-lightgallery="item">
+                        <a class="thumbnail-light" href="{{ Storage::disk('public')->url($gallery->image_path) }}" data-lightgallery="item">
                             <span class="caption">{{ $gallery->title }}</span>
-                            <img class="thumbnail-light-image" src="{{ asset('storage/'.$gallery->image_path) }}" alt="{{ $gallery->title }}" width="383" height="290"/>
+                            <img class="thumbnail-light-image" src="{{ Storage::disk('public')->url($gallery->image_path) }}" alt="{{ $gallery->title }}" width="383" height="290"/>
                         </a>
                     </div>
                 @endforeach
