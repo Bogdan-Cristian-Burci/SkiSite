@@ -8,7 +8,12 @@ use App\Http\Traits\HandlesImages;
 use App\Models\Camp;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\CampUpdatedAdmin;
+use App\Mail\CampUpdatedUser;
+use App\Mail\CampCancelledAdmin;
+use App\Mail\CampCancelledUser;
 
 class CampController extends Controller
 {
@@ -188,8 +193,9 @@ class CampController extends Controller
             return redirect()->back()->with('error', __('Please specify at least one adult or child.'));
         }
         
-        // Check if user is registered for this camp
-        if (!$user->camps()->where('camp_id', $camp->id)->exists()) {
+        // Check if user is registered for this camp and get current registration data
+        $currentRegistration = $user->camps()->where('camp_id', $camp->id)->first();
+        if (!$currentRegistration) {
             if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
@@ -199,11 +205,30 @@ class CampController extends Controller
             return redirect()->back()->with('error', __('You are not registered for this camp.'));
         }
         
+        // Store old data for email notification
+        $oldData = [
+            'number_of_adults' => $currentRegistration->pivot->number_of_adults,
+            'number_of_children' => $currentRegistration->pivot->number_of_children,
+        ];
+        
         // Update the registration
         $user->camps()->updateExistingPivot($camp->id, [
             'number_of_adults' => $request->number_of_adults,
             'number_of_children' => $request->number_of_children,
         ]);
+        
+        // Send email notifications
+        try {
+            // Send email to admin
+            Mail::to(config('appointment.email.admin_email'))
+                ->send(new CampUpdatedAdmin($camp, $user, $oldData));
+
+            // Send email to user
+            Mail::to($user->email)
+                ->send(new CampUpdatedUser($camp, $user, $oldData));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send camp update emails: ' . $e->getMessage());
+        }
         
         // Return appropriate response based on request type
         if ($request->ajax()) {
@@ -233,6 +258,19 @@ class CampController extends Controller
         
         // Cancel the registration
         $user->camps()->detach($camp->id);
+        
+        // Send email notifications
+        try {
+            // Send email to admin
+            Mail::to(config('appointment.email.admin_email'))
+                ->send(new CampCancelledAdmin($camp, $user));
+
+            // Send email to user
+            Mail::to($user->email)
+                ->send(new CampCancelledUser($camp, $user));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send camp cancellation emails: ' . $e->getMessage());
+        }
         
         // Return appropriate response based on request type
         if ($request->ajax()) {

@@ -36,20 +36,5 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
         $admin->assignRole('admin');
 
-        $instructor = User::create([
-            'name' => 'Instructor User',
-            'email' => 'instructor@skisite.com',
-            'password' => bcrypt('password'),
-            'phone' => '1234567891',
-        ]);
-        $instructor->assignRole('instructor');
-
-        $customer = User::create([
-            'name' => 'Customer User',
-            'email' => 'customer@skisite.com',
-            'password' => bcrypt('password'),
-            'phone' => '1234567892',
-        ]);
-        $customer->assignRole('customer');
     }
 }
