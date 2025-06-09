@@ -1,5 +1,7 @@
 "use strict";
 (function () {
+
+    console.log('Script loaded successfully!');
 	// Global variables
 	var userAgent = navigator.userAgent.toLowerCase(),
 		initialDate = new Date(),
@@ -813,132 +815,132 @@
 			});
 		}
 
-		function initSwiper(sliderMarkup) {
-			var
-				autoplayAttr = sliderMarkup.getAttribute('data-autoplay') || 5000,
-				slides = sliderMarkup.querySelectorAll('.swiper-slide'),
-				swiper,
-				options = {
-					loop: sliderMarkup.getAttribute('data-loop') === 'true' || false,
-					effect: sliderMarkup.getAttribute('data-effect') || 'slide',
-					direction: sliderMarkup.getAttribute('data-direction') || 'horizontal',
-					speed: sliderMarkup.getAttribute('data-speed') ? Number(sliderMarkup.getAttribute('data-speed')) : 600,
-					simulateTouch: sliderMarkup.getAttribute('data-simulate-touch') === 'true' && !isNoviBuilder || false,
-					slidesPerView: sliderMarkup.getAttribute('data-slides') || 1,
-					spaceBetween: Number(sliderMarkup.getAttribute('data-margin')) || 0
-				};
-
-			if (Number(autoplayAttr)) {
-				options.autoplay = {
-					delay: Number(autoplayAttr),
-					stopOnLastSlide: false,
-					disableOnInteraction: true,
-					reverseDirection: false,
-				};
-			}
-
-			if (sliderMarkup.getAttribute('data-keyboard') === 'true') {
-				options.keyboard = {
-					enabled: sliderMarkup.getAttribute('data-keyboard') === 'true',
-					onlyInViewport: true
-				};
-			}
-
-			if (sliderMarkup.getAttribute('data-mousewheel') === 'true') {
-				options.mousewheel = {
-					sensitivity: 1
-				};
-			}
-
-			if (sliderMarkup.querySelector('.swiper-button-next, .swiper-button-prev')) {
-				options.navigation = {
-					nextEl: '.swiper-button-next',
-					prevEl: '.swiper-button-prev'
-				};
-			}
-
-			if (sliderMarkup.querySelector('.swiper-pagination')) {
-				options.pagination = {
-					el: '.swiper-pagination',
-					type: 'bullets',
-					clickable: true
-				};
-			}
-
-			if (sliderMarkup.querySelector('.swiper-scrollbar')) {
-				options.scrollbar = {
-					el: '.swiper-scrollbar',
-					hide: false
-				};
-			}
-
-			for (var s = 0; s < slides.length; s++) {
-				var
-					slide = slides[s],
-					url = slide.getAttribute('data-slide-bg');
-
-				if (url) slide.style.backgroundImage = 'url(' + url + ')';
-			}
-
-			options.on = {
-				init: function () {
-					setRealPrevious(this);
-					initCaptionAnimate(this);
-
-					// Real Previous Index must be set recent
-					this.on('slideChangeTransitionEnd', function () {
-						setRealPrevious(this);
-					});
-				}
-			};
-
-			swiper = new Swiper(sliderMarkup, options);
-			return swiper;
-		}
-
-
-		// Countdown
-		if (plugins.countdown.length) {
-			for (let i = 0; i < plugins.countdown.length; i++) {
-				let
-					node = plugins.countdown[i],
-					countdown = aCountdown({
-						node:  node,
-						from:  node.getAttribute('data-from'),
-						to:    node.getAttribute('data-to'),
-						count: node.getAttribute('data-count'),
-						tick:  100,
-					});
-			}
-		}
-
-		// Google ReCaptcha
-		if (plugins.captcha.length) {
-			$.getScript("//www.google.com/recaptcha/api.js?onload=onloadCaptchaCallback&render=explicit&hl=en");
-		}
-
-		// Additional class on html if mac os.
-		if (navigator.platform.match(/(Mac)/i)) {
-			$html.addClass("mac-os");
-		}
-
-		// Adds some loosing functionality to IE browsers (IE Polyfills)
-		if (isIE) {
-			if (isIE === 12) $html.addClass("ie-edge");
-			if (isIE === 11) $html.addClass("ie-11");
-			if (isIE < 10) $html.addClass("lt-ie-10");
-			if (isIE < 11) $html.addClass("ie-10");
-		}
-
-		// Bootstrap Tooltips
-		if (plugins.bootstrapTooltip.length) {
-			var tooltipPlacement = plugins.bootstrapTooltip.attr('data-placement');
-			initBootstrapTooltip(tooltipPlacement);
-
-			$window.on('resize orientationchange', function () {
-				initBootstrapTooltip(tooltipPlacement);
-			})
-		}
+		// function initSwiper(sliderMarkup) {
+		// 	var
+		// 		autoplayAttr = sliderMarkup.getAttribute('data-autoplay') || 5000,
+		// 		slides = sliderMarkup.querySelectorAll('.swiper-slide'),
+		// 		swiper,
+		// 		options = {
+		// 			loop: sliderMarkup.getAttribute('data-loop') === 'true' || false,
+		// 			effect: sliderMarkup.getAttribute('data-effect') || 'slide',
+		// 			direction: sliderMarkup.getAttribute('data-direction') || 'horizontal',
+		// 			speed: sliderMarkup.getAttribute('data-speed') ? Number(sliderMarkup.getAttribute('data-speed')) : 600,
+		// 			simulateTouch: sliderMarkup.getAttribute('data-simulate-touch') === 'true' && !isNoviBuilder || false,
+		// 			slidesPerView: sliderMarkup.getAttribute('data-slides') || 1,
+		// 			spaceBetween: Number(sliderMarkup.getAttribute('data-margin')) || 0
+		// 		};
+        //
+		// 	if (Number(autoplayAttr)) {
+		// 		options.autoplay = {
+		// 			delay: Number(autoplayAttr),
+		// 			stopOnLastSlide: false,
+		// 			disableOnInteraction: true,
+		// 			reverseDirection: false,
+		// 		};
+		// 	}
+        //
+		// 	if (sliderMarkup.getAttribute('data-keyboard') === 'true') {
+		// 		options.keyboard = {
+		// 			enabled: sliderMarkup.getAttribute('data-keyboard') === 'true',
+		// 			onlyInViewport: true
+		// 		};
+		// 	}
+        //
+		// 	if (sliderMarkup.getAttribute('data-mousewheel') === 'true') {
+		// 		options.mousewheel = {
+		// 			sensitivity: 1
+		// 		};
+		// 	}
+        //
+		// 	if (sliderMarkup.querySelector('.swiper-button-next, .swiper-button-prev')) {
+		// 		options.navigation = {
+		// 			nextEl: '.swiper-button-next',
+		// 			prevEl: '.swiper-button-prev'
+		// 		};
+		// 	}
+        //
+		// 	if (sliderMarkup.querySelector('.swiper-pagination')) {
+		// 		options.pagination = {
+		// 			el: '.swiper-pagination',
+		// 			type: 'bullets',
+		// 			clickable: true
+		// 		};
+		// 	}
+        //
+		// 	if (sliderMarkup.querySelector('.swiper-scrollbar')) {
+		// 		options.scrollbar = {
+		// 			el: '.swiper-scrollbar',
+		// 			hide: false
+		// 		};
+		// 	}
+        //
+		// 	for (var s = 0; s < slides.length; s++) {
+		// 		var
+		// 			slide = slides[s],
+		// 			url = slide.getAttribute('data-slide-bg');
+        //
+		// 		if (url) slide.style.backgroundImage = 'url(' + url + ')';
+		// 	}
+        //
+		// 	options.on = {
+		// 		init: function () {
+		// 			setRealPrevious(this);
+		// 			initCaptionAnimate(this);
+        //
+		// 			// Real Previous Index must be set recent
+		// 			this.on('slideChangeTransitionEnd', function () {
+		// 				setRealPrevious(this);
+		// 			});
+		// 		}
+		// 	};
+        //
+		// 	swiper = new Swiper(sliderMarkup, options);
+		// 	return swiper;
+		// }
+        //
+        //
+		// // Countdown
+		// if (plugins.countdown.length) {
+		// 	for (let i = 0; i < plugins.countdown.length; i++) {
+		// 		let
+		// 			node = plugins.countdown[i],
+		// 			countdown = aCountdown({
+		// 				node:  node,
+		// 				from:  node.getAttribute('data-from'),
+		// 				to:    node.getAttribute('data-to'),
+		// 				count: node.getAttribute('data-count'),
+		// 				tick:  100,
+		// 			});
+		// 	}
+		// }
+        //
+		// // Google ReCaptcha
+		// if (plugins.captcha.length) {
+		// 	$.getScript("//www.google.com/recaptcha/api.js?onload=onloadCaptchaCallback&render=explicit&hl=en");
+		// }
+        //
+		// // Additional class on html if mac os.
+		// if (navigator.platform.match(/(Mac)/i)) {
+		// 	$html.addClass("mac-os");
+		// }
+        //
+		// // Adds some loosing functionality to IE browsers (IE Polyfills)
+		// if (isIE) {
+		// 	if (isIE === 12) $html.addClass("ie-edge");
+		// 	if (isIE === 11) $html.addClass("ie-11");
+		// 	if (isIE < 10) $html.addClass("lt-ie-10");
+		// 	if (isIE < 11) $html.addClass("ie-10");
+		// }
+        //
+		// // Bootstrap Tooltips
+		// if (plugins.bootstrapTooltip.length) {
+		// 	var tooltipPlacement = plugins.bootstrapTooltip.attr('data-placement');
+		// 	initBootstrapTooltip(tooltipPlacement);
+        //
+		// 	$window.on('resize orientationchange', function () {
+		// 		initBootstrapTooltip(tooltipPlacement);
+		// 	})
+		// }
 
 		// Bootstrap Modal
 		if (plugins.bootstrapModal.length) {
@@ -1160,28 +1162,28 @@
 		}
 
 		// Swiper
-		if (plugins.swiper) {
-			for (var i = 0; i < plugins.swiper.length; i++) {
-				plugins.swiper[i].swiper = initSwiper(plugins.swiper[i]);
-			}
-
-			var dynamicSwipers = $('.swiper-slider-custom');
-			if(dynamicSwipers.length) {
-				$window.on('resize orientationchange', function () {
-					for (var i = 0; i < dynamicSwipers.length; i++) {
-						if(window.innerWidth < 576 && dynamicSwipers[i].swiper.params.direction === 'vertical') {
-							dynamicSwipers[i].setAttribute('data-direction', 'horizontal');
-							dynamicSwipers[i].swiper.destroy();
-							initSwiper(dynamicSwipers[i]);
-						} else if (window.innerWidth >= 576 && dynamicSwipers[i].swiper.params.direction === 'horizontal') {
-							dynamicSwipers[i].setAttribute('data-direction', 'vertical');
-							dynamicSwipers[i].swiper.destroy();
-							initSwiper(dynamicSwipers[i]);
-						}
-					}
-				});
-			}
-		}
+		// if (plugins.swiper) {
+		// 	for (var i = 0; i < plugins.swiper.length; i++) {
+		// 		plugins.swiper[i].swiper = initSwiper(plugins.swiper[i]);
+		// 	}
+        //
+		// 	var dynamicSwipers = $('.swiper-slider-custom');
+		// 	if(dynamicSwipers.length) {
+		// 		$window.on('resize orientationchange', function () {
+		// 			for (var i = 0; i < dynamicSwipers.length; i++) {
+		// 				if(window.innerWidth < 576 && dynamicSwipers[i].swiper.params.direction === 'vertical') {
+		// 					dynamicSwipers[i].setAttribute('data-direction', 'horizontal');
+		// 					dynamicSwipers[i].swiper.destroy();
+		// 					initSwiper(dynamicSwipers[i]);
+		// 				} else if (window.innerWidth >= 576 && dynamicSwipers[i].swiper.params.direction === 'horizontal') {
+		// 					dynamicSwipers[i].setAttribute('data-direction', 'vertical');
+		// 					dynamicSwipers[i].swiper.destroy();
+		// 					initSwiper(dynamicSwipers[i]);
+		// 				}
+		// 			}
+		// 		});
+		// 	}
+		// }
 
 		// Owl carousel
 		if ( plugins.owl.length ) {

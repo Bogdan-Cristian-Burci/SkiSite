@@ -114,11 +114,7 @@
                         <div class="rd-navbar-brand">
                             @if(!empty($company->logo_path))
                             <a class="brand" href="{{ route('home') }}">
-                                <img class="brand-logo" src="{{ asset('storage/' . $company->logo_path) }}" alt="{{ config('app.name') }}" width="153" height="52"/>
-                            </a>
-                            @else
-                            <a class="brand" href="{{ route('home') }}">
-                                <img class="brand-logo" src="{{ asset('images/logo-default-306x104.png') }}" alt="{{ config('app.name') }}" width="153" height="52"/>
+                                <img class="brand-logo" src="{{ asset('storage/' . $company->logo_path) }}" alt="{{ config('app.name') }}" width="35" />
                             </a>
                             @endif
                         </div>

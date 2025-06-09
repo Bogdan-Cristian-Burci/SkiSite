@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+
         View::composer('partials.header-inner', function ($view) {
             $currentRoute = request()->route()->getName();
 
@@ -37,21 +39,22 @@ class AppServiceProvider extends ServiceProvider
                 : asset('images/bg-image-1.jpg');
 
 
-
+            $company = Company::first();
             $view->with([
                 'headerImageUrl'=> $imageUrl,
+                'company' => $company
             ]);
         });
 
         View::composer('partials.footer', function ($view) {
             $skiPrograms = SkiProgram::take(4)->get();
 
-            $company = Company::first();
             $regulations = Regulation::all();
+            $company = Company::first();
 
             $view->with([
                 'footerSkiPrograms' => $skiPrograms,
-                'footerCompany' => $company,
+                'company' => $company,
                 'footerRegulations' => $regulations,
             ]);
         });
@@ -60,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
             $skiPrograms = SkiProgram::all();
 
             $view->with([
-                'skiPrograms' => $skiPrograms
+                'skiPrograms' => $skiPrograms,
             ]);
         });
 
@@ -73,7 +76,6 @@ class AppServiceProvider extends ServiceProvider
                 'skiPrograms' => $skiPrograms,
                 'company' => $company
             ]);
-
         });
 
     }

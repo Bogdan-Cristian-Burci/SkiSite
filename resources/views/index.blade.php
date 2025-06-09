@@ -45,13 +45,15 @@
                             <div class="col-md-12 col-lg-12">
                                 @include('partials.appointment-form')
                             </div>
-                            <div class="col-md-12 col-lg-12">
-                                <div class="box-call">
-                                    <div class="heading-4">Do you need help?</div>
-                                    <p>Watch this presentation to know more about us.</p>
-                                    <div class="info-group"><span class="icon mdi mdi-phone"></span><a href="tel:{{ config('site.phone', '1-800-346-6277') }}">{{ config('site.phone', '1-800-346-6277') }}</a></div>
+                            @if($company->phone)
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="box-call">
+                                        <div class="heading-4">{{__('Do you need help')}} ?</div>
+                                        <p>{{__("You can call us at phone number written bellow or send us a message using our contact form")}}</p>
+                                        <div class="info-group"><span class="icon mdi mdi-phone"></span><a href="tel:{{ $company->phone }}">{{ $company->phone }}</a></div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -267,10 +269,10 @@
 
                         @endforeach
                         <div class="col-sm-6 col-lg-12 wow fadeIn" data-wow-delay=".15s">
-                            <p class="text-accent mt-md-30 mt-xl-50">{{ config('site.address', '9 Valley St. Brooklyn, NY 11203') }}</p>
+                            <p class="text-accent mt-md-30 mt-xl-50">{{ $company->address }}</p>
                             <article class="box-inline-1">
                                 <span class="icon mdi mdi-phone"></span>
-                                <a href="tel:{{ config('site.phone', '1-800-346-6277') }}">{{ config('site.phone', '1-800-346-6277') }}</a>
+                                <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>
                             </article>
                         </div>
                     </div>
@@ -281,41 +283,7 @@
 @endsection
 
 @push('scripts')
-<script>
-$(document).ready(function() {
-    // Debug script for slick slider
-    console.log('DOM ready - checking for slick sliders');
-    console.log('Slick sliders found:', $('.slick-slider').length);
-    $('.slick-slider').each(function(index) {
-        console.log('Slider ' + index + ':', this);
-        console.log('Children count:', $(this).children().length);
-    });
-    
-    // Force initialize slick if not already initialized
-    setTimeout(function() {
-        $('.slick-slider').each(function() {
-            if (!$(this).hasClass('slick-initialized')) {
-                console.log('Manually initializing slider:', this);
-                $(this).slick({
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                    dots: true,
-                    autoplay: true,
-                    centerMode: true,
-                    responsive: [
-                        {
-                            breakpoint: 768,
-                            settings: {
-                                slidesToShow: 1
-                            }
-                        }
-                    ]
-                });
-            }
-        });
-    }, 1000);
-});
-</script>
+
 @endpush
 
 @push('styles')

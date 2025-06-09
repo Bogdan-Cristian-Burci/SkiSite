@@ -19,9 +19,78 @@
                     </form>
                 </div>
                 
-                <div class="alert alert-success">
-                    {{ __('Welcome back, :name!', ['name' => auth()->user()->name]) }} 
-                    {{ __('You have admin access to manage all site content.') }}
+                <!-- Statistics Overview -->
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <h2 class="mb-4">{{ __('Overview') }}</h2>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title">{{ $appointments->count() }}</h4>
+                                        <p class="card-text">{{ __('Total Appointments') }}</p>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fa fa-calendar fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title">{{ $campBookings->count() }}</h4>
+                                        <p class="card-text">{{ __('Camp Bookings') }}</p>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fa fa-users fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title">{{ $thisMonthAppointments }}</h4>
+                                        <p class="card-text">{{ __('This Month') }}</p>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fa fa-trending-up fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title">{{ $upcomingAppointments }}</h4>
+                                        <p class="card-text">{{ __('Upcoming') }}</p>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fa fa-clock-o fa-2x"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Management Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>{{ __('Management') }}</h2>
+                    </div>
                 </div>
 
                 <div class="row">

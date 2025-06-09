@@ -1,5 +1,6 @@
 "use strict";
 (function () {
+    console.log('loading iife');
 	// Global variables
 	var userAgent = navigator.userAgent.toLowerCase(),
 		initialDate = new Date(),

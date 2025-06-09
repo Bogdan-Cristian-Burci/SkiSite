@@ -293,6 +293,14 @@ Route::middleware('instructor')->group(function () {
                 ->orderBy('created_at', 'desc')
                 ->get();
             
+            // Calculate statistics
+            $thisMonthAppointments = \App\Models\Appointment::whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count();
+                
+            $upcomingAppointments = \App\Models\Appointment::where('start_date', '>=', now()->format('Y-m-d'))
+                ->count();
+            
             // Get all camp bookings - get users who have camp bookings
             $campBookings = \App\Models\User::whereHas('camps')->with(['camps' => function($query) {
                 $query->withPivot(['number_of_adults', 'number_of_children', 'created_at']);
@@ -305,7 +313,7 @@ Route::middleware('instructor')->group(function () {
             })
             ->sortByDesc('pivot.created_at');
             
-            return view('dashboard.admin', compact('appointments', 'campBookings'));
+            return view('dashboard.admin', compact('appointments', 'campBookings', 'thisMonthAppointments', 'upcomingAppointments'));
         } elseif ($user->hasRole('instructor')) {
             return view('dashboard.instructor');
         }
