@@ -99,28 +99,149 @@ class CampController extends Controller
         $locale = app()->getLocale();
         $camp = Camp::whereJsonContains("slug->{$locale}", $slug)->firstOrFail();
         
-        return view('camp-details', compact('camp'));
+        // Check if user is already registered for this camp
+        $userRegistration = null;
+        if (auth()->check()) {
+            $userRegistration = auth()->user()->camps()
+                ->where('camp_id', $camp->id)
+                ->first();
+        }
+        
+        // Calculate taken spots (sum of adults + children for all registrations)
+        $takenSpots = $camp->users()
+            ->selectRaw('SUM(number_of_adults + number_of_children) as total_spots')
+            ->value('total_spots') ?? 0;
+        
+        // Calculate available spots
+        $availableSpots = max(0, $camp->capacity - $takenSpots);
+        
+        return view('camp-details', compact('camp', 'userRegistration', 'takenSpots', 'availableSpots'));
     }
 
     public function book(Request $request, Camp $camp)
     {
         $user = auth()->user();
         
-        // Check if user is already booked for this camp
-        if ($user->camps()->where('camp_id', $camp->id)->exists()) {
-            return redirect()->back()->with('error', __('You are already booked for this camp.'));
+        // Validate the request
+        $request->validate([
+            'number_of_adults' => 'required|integer|min:0|max:10',
+            'number_of_children' => 'required|integer|min:0|max:10',
+        ]);
+        
+        // Check if at least one person is specified
+        if ($request->number_of_adults == 0 && $request->number_of_children == 0) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('Please specify at least one adult or child.')
+                ], 422);
+            }
+            return redirect()->back()->with('error', __('Please specify at least one adult or child.'));
         }
         
-        // Default values for adults and children
-        $numberOfAdults = $request->input('number_of_adults', 1);
-        $numberOfChildren = $request->input('number_of_children', 0);
+        // Check if user is already booked for this camp
+        if ($user->camps()->where('camp_id', $camp->id)->exists()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('You are already registered for this camp.')
+                ], 422);
+            }
+            return redirect()->back()->with('error', __('You are already registered for this camp.'));
+        }
         
         // Book the user to the camp
         $user->camps()->attach($camp->id, [
-            'number_of_adults' => $numberOfAdults,
-            'number_of_children' => $numberOfChildren,
+            'number_of_adults' => $request->number_of_adults,
+            'number_of_children' => $request->number_of_children,
         ]);
         
-        return redirect()->back()->with('success', __('Successfully booked for the camp!'));
+        // Return appropriate response based on request type
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('Successfully registered for the camp!')
+            ]);
+        }
+        
+        return redirect()->back()->with('success', __('Successfully registered for the camp!'));
+    }
+
+    public function updateRegistration(Request $request, Camp $camp)
+    {
+        $user = auth()->user();
+        
+        // Validate the request
+        $request->validate([
+            'number_of_adults' => 'required|integer|min:0|max:10',
+            'number_of_children' => 'required|integer|min:0|max:10',
+        ]);
+        
+        // Check if at least one person is specified
+        if ($request->number_of_adults == 0 && $request->number_of_children == 0) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('Please specify at least one adult or child.')
+                ], 422);
+            }
+            return redirect()->back()->with('error', __('Please specify at least one adult or child.'));
+        }
+        
+        // Check if user is registered for this camp
+        if (!$user->camps()->where('camp_id', $camp->id)->exists()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('You are not registered for this camp.')
+                ], 422);
+            }
+            return redirect()->back()->with('error', __('You are not registered for this camp.'));
+        }
+        
+        // Update the registration
+        $user->camps()->updateExistingPivot($camp->id, [
+            'number_of_adults' => $request->number_of_adults,
+            'number_of_children' => $request->number_of_children,
+        ]);
+        
+        // Return appropriate response based on request type
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('Registration updated successfully!')
+            ]);
+        }
+        
+        return redirect()->back()->with('success', __('Registration updated successfully!'));
+    }
+
+    public function cancelRegistration(Request $request, Camp $camp)
+    {
+        $user = auth()->user();
+        
+        // Check if user is registered for this camp
+        if (!$user->camps()->where('camp_id', $camp->id)->exists()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('You are not registered for this camp.')
+                ], 422);
+            }
+            return redirect()->back()->with('error', __('You are not registered for this camp.'));
+        }
+        
+        // Cancel the registration
+        $user->camps()->detach($camp->id);
+        
+        // Return appropriate response based on request type
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('Registration cancelled successfully!')
+            ]);
+        }
+        
+        return redirect()->back()->with('success', __('Registration cancelled successfully!'));
     }
 }

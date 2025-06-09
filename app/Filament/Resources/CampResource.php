@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\Action;
+use Filament\Support\Enums\FontWeight;
 
 class CampResource extends Resource
 {
@@ -107,12 +109,25 @@ class CampResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('image_path'),
-                Tables\Columns\TextColumn::make('latitude')
+                Tables\Columns\TextColumn::make('capacity')
+                    ->label('Capacity')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('longitude')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('users_count')
+                    ->label('Reservations')
+                    ->counts('users')
+                    ->badge()
+                    ->color('success')
+                    ->weight(FontWeight::Bold)
+                    ->action(
+                        Action::make('viewReservations')
+                            ->label('View Reservations')
+                            ->icon('heroicon-m-users')
+                            ->modalHeading(fn (Camp $record) => 'Reservations for: ' . ($record->title['en'] ?? $record->title))
+                            ->modalContent(fn (Camp $record) => view('filament.modals.camp-reservations', ['camp' => $record]))
+                            ->modalSubmitAction(false)
+                            ->modalCancelActionLabel('Close')
+                    ),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

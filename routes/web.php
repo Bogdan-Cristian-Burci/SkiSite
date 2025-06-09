@@ -128,6 +128,15 @@ Route::post('camps/{camp}/book', [CampController::class, 'book'])
     ->middleware('auth')
     ->name('camps.book');
 
+// Camp registration management (requires authentication)
+Route::post('camps/{camp}/update-registration', [CampController::class, 'updateRegistration'])
+    ->middleware('auth')
+    ->name('camps.updateRegistration');
+
+Route::post('camps/{camp}/cancel-registration', [CampController::class, 'cancelRegistration'])
+    ->middleware('auth')
+    ->name('camps.cancelRegistration');
+
 // Language switching
 Route::get('lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'ro'])) {
@@ -351,3 +360,18 @@ Route::prefix('api')->group(function () {
         Route::get('/user', [AuthController::class, 'user']);
     });
 });
+
+// Storage file serving route (workaround for Herd nginx config)
+Route::get('storage/{path}', function ($path) {
+    $filePath = storage_path('app/public/' . $path);
+    
+    if (!file_exists($filePath)) {
+        abort(404);
+    }
+    
+    $mimeType = mime_content_type($filePath);
+    return response()->file($filePath, [
+        'Content-Type' => $mimeType,
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*')->name('storage.serve');
