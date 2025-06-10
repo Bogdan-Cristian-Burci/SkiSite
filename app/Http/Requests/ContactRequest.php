@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\RecaptchaV3;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
@@ -22,10 +23,11 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'subject' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\.\-]+$/'],
+            'email' => ['required', 'email', 'max:255', 'filter:email'],
+            'subject' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z0-9\s\.\-\!\?]+$/'],
             'message' => ['required', 'string', 'min:10', 'max:5000'],
+            'g-recaptcha-response' => ['required', new RecaptchaV3],
         ];
     }
 
@@ -42,6 +44,10 @@ class ContactRequest extends FormRequest
             'message.required' => __('Please enter your message.'),
             'message.min' => __('Your message must be at least 10 characters long.'),
             'message.max' => __('Your message cannot exceed 5000 characters.'),
+            'g-recaptcha-response.required' => __('Please complete the captcha verification.'),
+            'g-recaptcha-response.captcha' => __('Captcha verification failed. Please try again.'),
+            'name.regex' => __('Name can only contain letters, spaces, periods, and hyphens.'),
+            'subject.regex' => __('Subject contains invalid characters.'),
         ];
     }
 }

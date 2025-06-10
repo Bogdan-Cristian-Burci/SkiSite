@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('Login') }} - {{ config('app.name') }}</title>
+    <title>{{ __('Reset Password') }} - {{ config('app.name') }}</title>
 
     <!-- Bootstrap CSS -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
@@ -111,15 +111,6 @@
             text-decoration: underline;
         }
 
-        .form-check {
-            margin: 20px 0;
-        }
-
-        .form-check-label {
-            color: #555;
-            font-weight: 400;
-        }
-
         .alert {
             border-radius: 12px;
             margin-bottom: 20px;
@@ -141,7 +132,7 @@
 <body>
     <div class="auth-wrapper">
         <div class="auth-form">
-            <h2>{{ __('Login') }}</h2>
+            <h2>{{ __('Reset Password') }}</h2>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -153,12 +144,14 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('password.update') }}">
                 @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
+
                 <div class="form-group">
                     <label for="email">{{ __('Email Address') }}</label>
                     <input type="email" class="form-control @error('email') is-invalid @enderror"
-                           id="email" name="email" value="{{ old('email') }}" required autofocus>
+                           id="email" name="email" value="{{ $email ?? old('email') }}" required autofocus>
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -177,21 +170,19 @@
                     @enderror
                 </div>
 
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="remember">
-                        {{ __('Remember Me') }}
-                    </label>
+                <div class="form-group">
+                    <label for="password_confirmation">{{ __('Confirm Password') }}</label>
+                    <input type="password" class="form-control"
+                           id="password_confirmation" name="password_confirmation" required>
                 </div>
 
                 <button type="submit" class="btn btn-auth">
-                    {{ __('Login') }}
+                    {{ __('Reset Password') }}
                 </button>
             </form>
 
             <div class="auth-link">
-                <p><a href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a></p>
-                <p>{{ __("Don't have an account?") }} <a href="{{ route('register') }}">{{ __('Register here') }}</a></p>
+                <p><a href="{{ route('login') }}">{{ __('Back to Login') }}</a></p>
             </div>
         </div>
     </div>

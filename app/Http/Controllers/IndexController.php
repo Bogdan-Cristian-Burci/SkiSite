@@ -20,24 +20,40 @@ class IndexController extends Controller
     {
         $locale = $request->get('locale', app()->getLocale());
 
-        // Get all hero sliders
-        $heroSliders = HeroSlider::all();
-        $skiPrograms= SkiProgram::all();
-        $skiInstructors = SkiInstructor::take(2)->get();
-        $camps = Camp::take(3)->get();
-        $blogs = BlogPost::with(['categories'])->orderBy('created_at', 'desc')->take(2)->get();
-        $testimonials = Testimonial::take(10)->get();
+        // Cache homepage data for 30 minutes, separate by locale
+        $cacheKey = "homepage_data_{$locale}";
+        
+        $data = \Cache::remember($cacheKey, 1800, function () use ($locale) {
+            return [
+                'heroSliders' => HeroSlider::all(),
+                'skiPrograms' => SkiProgram::all(),
+                'skiInstructors' => SkiInstructor::take(2)->get(),
+                'camps' => Camp::take(3)->get(),
+                'blogs' => BlogPost::with(['categories'])->orderBy('created_at', 'desc')->take(2)->get(),
+                'testimonials' => Testimonial::take(10)->get(),
+                'popularDestinations' => PopularDestination::active()->ordered()->get(),
+                'whyChooseUs' => WhyChooseUs::active()->ordered()->take(3)->get(),
+                'dividingSection' => DividingSection::active()->first(),
+                'company' => Company::first(),
+            ];
+        });
 
-        // Get new home page sections
-        $popularDestinations = PopularDestination::active()->ordered()->get();
-        $whyChooseUs = WhyChooseUs::active()->ordered()->take(3)->get();
-        $dividingSection = DividingSection::active()->first();
-        $company = Company::first();
-        // Set locale for each model to get proper translations
-        $heroSliders->each(function ($heroSlider) use ($locale) {
+        // Set locale for translatable models
+        $data['heroSliders']->each(function ($heroSlider) use ($locale) {
             $heroSlider->setLocale($locale);
         });
 
-        return view('index', compact('heroSliders', 'skiPrograms', 'skiInstructors', 'camps','blogs', 'testimonials', 'popularDestinations', 'whyChooseUs', 'dividingSection','company'));
+        return view('index', [
+            'heroSliders' => $data['heroSliders'],
+            'skiPrograms' => $data['skiPrograms'], 
+            'skiInstructors' => $data['skiInstructors'],
+            'camps' => $data['camps'],
+            'blogs' => $data['blogs'],
+            'testimonials' => $data['testimonials'],
+            'popularDestinations' => $data['popularDestinations'],
+            'whyChooseUs' => $data['whyChooseUs'],
+            'dividingSection' => $data['dividingSection'],
+            'company' => $data['company']
+        ]);
     }
 }

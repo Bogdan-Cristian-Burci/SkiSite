@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsHomepageCache;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 class WhyChooseUs extends Model
 {
-    use HasTranslations;
+    use HasTranslations, ClearsHomepageCache;
 
     protected $fillable = [
         'title',

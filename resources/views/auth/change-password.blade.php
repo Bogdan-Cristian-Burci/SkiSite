@@ -234,7 +234,11 @@
             </form>
 
             <div class="auth-link">
-                <p><a href="{{ route('dashboard') }}">{{ __('Back to Dashboard') }}</a></p>
+                @if(auth()->user()->hasAnyRole(['admin', 'instructor']))
+                    <p><a href="{{ route('dashboard') }}">{{ __('Back to Dashboard') }}</a></p>
+                @else
+                    <p><a href="{{ url('/') }}">{{ __('Back to Home') }}</a></p>
+                @endif
             </div>
         </div>
     </div>

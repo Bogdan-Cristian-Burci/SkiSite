@@ -64,9 +64,11 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('partials.navbar-inner', function ($view) {
             $skiPrograms = SkiProgram::all();
+            $company = Company::first();
 
             $view->with([
                 'skiPrograms' => $skiPrograms,
+                'company' => $company
             ]);
         });
 

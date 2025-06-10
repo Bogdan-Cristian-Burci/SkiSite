@@ -26,7 +26,14 @@ class PasswordChangeController extends Controller
             'must_change_password' => false,
         ]);
 
-        return redirect()->intended('/admin')
+        // Redirect based on user role
+        if ($user->hasAnyRole(['admin', 'instructor'])) {
+            $redirect = '/admin';
+        } else {
+            $redirect = '/';
+        }
+        
+        return redirect()->intended($redirect)
             ->with('success', 'Password changed successfully!');
     }
 }

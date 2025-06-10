@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsHomepageCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -9,7 +10,7 @@ use Spatie\Translatable\HasTranslations;
 
 class BlogPost extends Model
 {
-    use SoftDeletes, HasTranslations;
+    use SoftDeletes, HasTranslations, ClearsHomepageCache;
 
     public array $translatable = ['title', 'subtitle', 'content', 'slug'];
     protected $fillable = [

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsHomepageCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +10,7 @@ use Spatie\Translatable\HasTranslations;
 
 class SkiInstructor extends Model
 {
-    use SoftDeletes, HasTranslations;
+    use SoftDeletes, HasTranslations, ClearsHomepageCache;
 
     public array $translatable = ['position', 'bio'];
 

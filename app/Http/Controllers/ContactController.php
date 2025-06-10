@@ -16,7 +16,17 @@ class ContactController extends Controller
     public function store(ContactRequest $request): JsonResponse
     {
         try {
-            $contact = Contact::create($request->validated());
+            $validatedData = $request->validated();
+            
+            // Sanitize input data
+            $sanitizedData = [
+                'name' => strip_tags(trim($validatedData['name'])),
+                'email' => filter_var(trim($validatedData['email']), FILTER_SANITIZE_EMAIL),
+                'subject' => strip_tags(trim($validatedData['subject'])),
+                'message' => strip_tags(trim($validatedData['message'])),
+            ];
+            
+            $contact = Contact::create($sanitizedData);
 
             Mail::to($contact->email)->send(new ContactReceived($contact));
 
@@ -47,7 +57,9 @@ class ContactController extends Controller
 
     public function webIndex()
     {
-        $company= Company::first();
+        $company = \Cache::remember('contact_company_data', 3600, function () {
+            return Company::first();
+        });
 
         return view('contact', compact('company'));
     }

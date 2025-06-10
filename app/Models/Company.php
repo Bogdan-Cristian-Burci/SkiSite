@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsHomepageCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 class Company extends Model
 {
-    use SoftDeletes, HasTranslations;
+    use SoftDeletes, HasTranslations, ClearsHomepageCache;
 
     public array $translatable = ['name','description', 'about_title', 'about_content'];
     protected $fillable = [

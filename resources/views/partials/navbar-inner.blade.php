@@ -69,6 +69,22 @@
                         </a>
                     @endcan
 
+                    @if(auth()->user() && !auth()->user()->hasVerifiedEmail() && !auth()->user()->hasAnyRole(['admin', 'instructor']))
+                        <a href="{{ route('verification.notice') }}" style="
+                            display: block;
+                            padding: 10px 16px;
+                            color: #dc3545;
+                            text-decoration: none;
+                            font-size: 14px;
+                            transition: background 0.2s ease;
+                            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                            background: rgba(220, 53, 69, 0.05);
+                        " onmouseover="this.style.background='rgba(220, 53, 69, 0.1)'"
+                           onmouseout="this.style.background='rgba(220, 53, 69, 0.05)'">
+                            <i class="mdi mdi-email-alert" style="margin-right: 8px;"></i>{{ __('Verify Email') }}
+                        </a>
+                    @endif
+
                     <a href="{{ route('password.change') }}" style="
                         display: block;
                         padding: 10px 16px;
@@ -188,8 +204,8 @@
                             <span class="rd-navbar-collapse-toggle-element active"><span></span></span>
                         </button>
                         <h4 class="font-weight-sbold">{{__('Our Office')}}</h4>
-                        <h5 class="ls-1">{{ config('site.address', '9 Valley St. Brooklyn, NY 11203') }}</h5>
-                        <h5 class="ls-1"><a href="tel:{{ config('site.phone', '1-800-346-6277') }}">{{ config('site.phone', '1-800-346-6277') }}</a></h5>
+                        <h5 class="ls-1">{{ $company->address }}</h5>
+                        <h5 class="ls-1"><a href="tel:{{ $company->phone }}">{{ $company->phone }}</a></h5>
                         <div class="divider divider-small"></div>
                         <h4 class="font-weight-sbold">{{__('Our Programs')}}</h4>
                         <!-- Swiper: You can implement a dynamic slider here if needed -->

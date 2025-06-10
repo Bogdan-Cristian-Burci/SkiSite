@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('Login') }} - {{ config('app.name') }}</title>
+    <title>{{ __('Forgot Password') }} - {{ config('app.name') }}</title>
 
     <!-- Bootstrap CSS -->
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
@@ -111,20 +111,21 @@
             text-decoration: underline;
         }
 
-        .form-check {
-            margin: 20px 0;
-        }
-
-        .form-check-label {
-            color: #555;
-            font-weight: 400;
-        }
-
         .alert {
             border-radius: 12px;
             margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: rgba(212, 237, 218, 0.9);
+            border: 1px solid rgba(25, 135, 84, 0.3);
+            color: #155724;
+        }
+
+        .alert-danger {
             background: rgba(248, 215, 218, 0.9);
             border: 1px solid rgba(220, 53, 69, 0.3);
+            color: #721c24;
         }
 
         .invalid-feedback {
@@ -136,12 +137,29 @@
         .is-invalid {
             border-color: #dc3545;
         }
+
+        .description {
+            color: #666;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
     <div class="auth-wrapper">
         <div class="auth-form">
-            <h2>{{ __('Login') }}</h2>
+            <h2>{{ __('Forgot Password') }}</h2>
+            
+            <div class="description">
+                {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+            </div>
+
+            @if (session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -153,7 +171,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('password.email') }}">
                 @csrf
                 <div class="form-group">
                     <label for="email">{{ __('Email Address') }}</label>
@@ -166,32 +184,13 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="password">{{ __('Password') }}</label>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror"
-                           id="password" name="password" required>
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="remember">
-                        {{ __('Remember Me') }}
-                    </label>
-                </div>
-
                 <button type="submit" class="btn btn-auth">
-                    {{ __('Login') }}
+                    {{ __('Email Password Reset Link') }}
                 </button>
             </form>
 
             <div class="auth-link">
-                <p><a href="{{ route('password.request') }}">{{ __('Forgot your password?') }}</a></p>
-                <p>{{ __("Don't have an account?") }} <a href="{{ route('register') }}">{{ __('Register here') }}</a></p>
+                <p><a href="{{ route('login') }}">{{ __('Back to Login') }}</a></p>
             </div>
         </div>
     </div>

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsHomepageCache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
 class Testimonial extends Model
 {
-    use SoftDeletes, HasTranslations;
+    use SoftDeletes, HasTranslations, ClearsHomepageCache;
 
     public array $translatable = ['content'];
 

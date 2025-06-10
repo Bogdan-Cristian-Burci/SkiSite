@@ -114,25 +114,25 @@ Route::get('/privacy-policy
 })->name('privacy-policy.fallback');
 
 // Contact form submission
-Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
+Route::post('contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store'); // 5 submissions per minute
 
-// Comment submission (requires authentication)
+// Comment submission (requires authentication and email verification)
 Route::post('blog/{blogPost}/comments', [\App\Http\Controllers\CommentController::class, 'webStore'])
-    ->middleware('auth')
+    ->middleware(['auth', 'verified'])
     ->name('comments.store');
 
-// Camp booking (requires authentication)
+// Camp booking (requires authentication and email verification)
 Route::post('camps/{camp}/book', [CampController::class, 'book'])
-    ->middleware('auth')
+    ->middleware(['auth', 'verified'])
     ->name('camps.book');
 
-// Camp registration management (requires authentication)
+// Camp registration management (requires authentication and email verification)
 Route::post('camps/{camp}/update-registration', [CampController::class, 'updateRegistration'])
-    ->middleware('auth')
+    ->middleware(['auth', 'verified'])
     ->name('camps.updateRegistration');
 
 Route::post('camps/{camp}/cancel-registration', [CampController::class, 'cancelRegistration'])
-    ->middleware('auth')
+    ->middleware(['auth', 'verified'])
     ->name('camps.cancelRegistration');
 
 // Language switching
@@ -277,10 +277,31 @@ Route::get('lang/{locale}', function ($locale) {
 
 // Authentication routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1'); // 5 attempts per minute
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:3,1'); // 3 registrations per minute
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Password reset routes
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->middleware('throttle:3,1')->name('password.email'); // 3 attempts per minute
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:3,1')->name('password.update'); // 3 attempts per minute
+
+// Email verification routes
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (\Illuminate\Foundation\Auth\EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/')->with('message', 'Email verified successfully!');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (\Illuminate\Http\Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Password change routes
 Route::middleware('auth')->group(function () {

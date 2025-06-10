@@ -42,6 +42,9 @@
             <textarea class="form-input" id="{{ $formId }}-message" name="message" rows="{{ $messageRows }}" required  placeholder="{{__('Please enter your message.')}}">{{ old('message') }}</textarea>
             <div class="icon form-icon mdi mdi-message-outline"></div>
         </div>
+        <div class="form-wrap">
+            {!! app('App\Services\RecaptchaService')->renderField() !!}
+        </div>
         <div class="form-wrap mt-40 mt-xl-55">
             <button id="{{ $formId }}-submit" class="button button-lg button-primary button-block" type="submit">
                 <span class="btn-text">{{ __('Send') }}</span>
@@ -78,6 +81,11 @@
                 <div class="form-wrap form-wrap-icon">
                     <textarea class="form-input" id="{{ $formId }}-message" name="message" rows="{{ $messageRows }}" required placeholder="{{__('Please enter your message.')}}">{{ old('message') }}</textarea>
                     <div class="icon form-icon mdi mdi-message-outline text-primary"></div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-wrap">
+                    {!! app('App\Services\RecaptchaService')->renderField() !!}
                 </div>
             </div>
         </div>
@@ -119,6 +127,11 @@
                     <div class="icon form-icon mdi mdi-message-outline text-primary"></div>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="form-wrap">
+                    {!! app('App\Services\RecaptchaService')->renderField() !!}
+                </div>
+            </div>
         </div>
         <div class="form-wrap form-wrap-button">
             <button id="{{ $formId }}-submit" class="button button-lg button-primary" type="submit">
@@ -130,6 +143,8 @@
         </div>
     @endif
 </form>
+
+{!! app('App\Services\RecaptchaService')->renderScript() !!}
 
 <style>
     .alert {
