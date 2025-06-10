@@ -23,26 +23,6 @@
                             </p>
                         @endif
 
-                        <!-- Regulation Meta Information -->
-                        <div class="regulation-meta mb-4">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="meta-item">
-                                        <span class="icon mdi mdi-calendar"></span>
-                                        <span class="meta-label">{{ __('Published') }}:</span>
-                                        <span class="meta-value">{{ $regulation->created_at->format('F d, Y') }}</span>
-                                    </div>
-                                </div>
-                                @if($regulation->updated_at != $regulation->created_at)
-                                    <div class="col-md-6">
-                                        <div class="meta-item">
-                                            <span class="icon mdi mdi-update"></span>
-                                            <span class="meta-label">{{ __('Updated') }}:</span>
-                                            <span class="meta-value">{{ $regulation->updated_at->format('F d, Y') }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
                         </div>
 
                         <!-- Regulation Content -->
@@ -158,7 +138,7 @@
     }
 
     .content-section p {
-        margin-bottom: 1.2rem;
+        margin:0;
     }
 
     .content-section ul,
