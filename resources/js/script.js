@@ -1,6 +1,5 @@
 "use strict";
 (function () {
-    console.log('loading iife');
 	// Global variables
 	var userAgent = navigator.userAgent.toLowerCase(),
 		initialDate = new Date(),
@@ -1161,9 +1160,11 @@
 		}
 
 		// Swiper
-		if (plugins.swiper) {
-			for (var i = 0; i < plugins.swiper.length; i++) {
-				plugins.swiper[i].swiper = initSwiper(plugins.swiper[i]);
+		var swiperElements = $(".swiper-container");
+		
+		if (swiperElements.length) {
+			for (var i = 0; i < swiperElements.length; i++) {
+				swiperElements[i].swiper = initSwiper(swiperElements[i]);
 			}
 
 			var dynamicSwipers = $('.swiper-slider-custom');

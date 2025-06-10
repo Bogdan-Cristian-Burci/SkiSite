@@ -10,6 +10,11 @@
 @section('content')
     <section class="section section-lg bg-default">
         <div class="container">
+            @if($webcams->isEmpty())
+                <div class="alert alert-info text-center">
+                    {{ __('No webcams available at the moment.') }}
+                </div>
+            @else
             <h3 class="wow fadeIn mb-4">{{ __('Live Webcams') }}</h3>
             <div class="row row-30">
                 @foreach($webcams as $webcam)
@@ -29,6 +34,7 @@
                         </div>
                      @endforeach
             </div>
+            @endif
         </div>
     </section>
 @endsection
