@@ -23,8 +23,6 @@
                             </p>
                         @endif
 
-                        </div>
-
                         <!-- Regulation Content -->
                         <div class="regulation-content">
                             <div class="content-section">
@@ -138,17 +136,18 @@
     }
 
     .content-section p {
-        margin:0;
+        margin-bottom: 0;
     }
 
     .content-section ul,
     .content-section ol {
-        margin-bottom: 1.5rem;
+
+    }
         padding-left: 2rem;
     }
 
     .content-section li {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0;
     }
 
     .content-section blockquote {
