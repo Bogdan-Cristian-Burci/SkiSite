@@ -197,7 +197,6 @@
                 <div class="rd-navbar-collapse-outer context-light">
                     <button class="rd-navbar-collapse-toggle" data-multitoggle="#rd-navbar-collapse, #toggle-inner">
                         <span class="rd-navbar-collapse-toggle-element" id="toggle-inner"><span></span></span>
-                        <span class="rd-navbar-collapse-toggle-text">{{__('Menu')}}</span>
                     </button>
                     <div class="rd-navbar-collapse" id="rd-navbar-collapse">
                         <button class="rd-navbar-collapse-close" data-multitoggle="#rd-navbar-collapse">

@@ -122,27 +122,27 @@ use Illuminate\Support\Facades\Storage;
                             @endif
                         </div>
                     </div>
-                    <div class="rd-navbar-aside-outer">
-                        <button class="rd-navbar-aside-toggle" data-multitoggle="#rd-navbar-aside" aria-label="Aside Toggle">
-                            <span></span>
-                        </button>
-                        <div class="rd-navbar-aside" id="rd-navbar-aside">
-                            <ul class="rd-navbar-aside-list">
-                                <li>
-                                    @if(!empty($company->address))
-                                        <span class="icon mdi mdi-map-marker"></span>
-                                        <a href="#">{{ $company->address }}</a>
-                                    @endif
-                                </li>
-                                <li>
-                                    @if(!empty($company->phone))
-                                        <span class="icon mdi mdi-phone"></span>
-                                        <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>
-                                    @endif
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+{{--                    <div class="rd-navbar-aside-outer">--}}
+{{--                        <button class="rd-navbar-aside-toggle" data-multitoggle="#rd-navbar-aside" aria-label="Aside Toggle">--}}
+{{--                            <span></span>--}}
+{{--                        </button>--}}
+{{--                        <div class="rd-navbar-aside" id="rd-navbar-aside">--}}
+{{--                            <ul class="rd-navbar-aside-list">--}}
+{{--                                <li>--}}
+{{--                                    @if(!empty($company->address))--}}
+{{--                                        <span class="icon mdi mdi-map-marker"></span>--}}
+{{--                                        <a href="#">{{ $company->address }}</a>--}}
+{{--                                    @endif--}}
+{{--                                </li>--}}
+{{--                                <li>--}}
+{{--                                    @if(!empty($company->phone))--}}
+{{--                                        <span class="icon mdi mdi-phone"></span>--}}
+{{--                                        <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>--}}
+{{--                                    @endif--}}
+{{--                                </li>--}}
+{{--                            </ul>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <!-- Language Switcher and User Profile (Desktop) -->
                     <div class="navbar-lang-switcher navbar-lang-desktop" style="display: flex; gap: 8px; align-items: center; margin-left: 20px;">
                         <a href="{{ route('lang.switch', 'ro') }}" style="display: inline-block; transition: opacity 0.3s ease;">

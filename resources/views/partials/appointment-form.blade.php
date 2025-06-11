@@ -89,7 +89,7 @@
     <div class="appointment-login-container">
         <h4 class="wow fadeIn font-weight-regular">{{__("Make an appointment")}}</h4>
         <p class="text-gray-500 mb-3">{{__("Please log in to book an appointment with our ski instructors")}}.</p>
-        <div class="form-element wow fadeIn" data-wow-delay=".1s">
+        <div class="form-element wow fadeIn justify-content-center" data-wow-delay=".1s">
             <a href="{{ route('login') }}" class="button button-lg button-primary btn-lg">
                 {{__("Log in to make an appointment")}}
             </a>
