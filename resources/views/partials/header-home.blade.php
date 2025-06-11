@@ -117,7 +117,7 @@ use Illuminate\Support\Facades\Storage;
                         <div class="rd-navbar-brand">
                             @if(!empty($company->logo_path))
                             <a class="brand" href="{{ route('home') }}">
-                                <img class="brand-logo" src="{{ Storage::disk('public')->url($company->logo_path) }}" alt="{{ config('app.name') }}" width="35" />
+                                <img class="brand-logo" src="{{ Storage::disk('public')->url($company->logo_path) }}" alt="{{ config('app.name') }}" style="width:50px;" />
                             </a>
                             @endif
                         </div>
