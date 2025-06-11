@@ -70,13 +70,13 @@ use Illuminate\Support\Facades\Storage;
                             @foreach($relatedPosts as $related)
                                 <div class="col-sm-6">
                                     <article class="post-classic ml-0">
-                                        <a class="post-classic-figure" href="{{ route('blog.show', ['id' => $related->id]) }}">
+                                        <a class="post-classic-figure" href="{{ route(app()->getLocale() . '.blog.show', ['slug' => $related->getTranslation('slug', app()->getLocale())]) }}">
                                             <img class="post-classic-image" src="{{ asset($related->image) }}" alt="" width="339" height="251"/>
                                         </a>
                                         <time class="post-classic-time" datetime="{{ $related->date->format('Y-m-d') }}">{{ $related->date->format('F d, Y') }}</time>
                                         <div class="post-classic-divider"></div>
                                         <p class="heading-4 post-classic-title">
-                                            <a href="{{ route('blog.show', ['id' => $related->id]) }}">{{ $related->title }}</a>
+                                            <a href="{{ route(app()->getLocale() . '.blog.show', ['slug' => $related->getTranslation('slug', app()->getLocale())]) }}">{{ $related->title }}</a>
                                         </p>
                                     </article>
                                 </div>
@@ -184,12 +184,12 @@ use Illuminate\Support\Facades\Storage;
                         <div class="group-post-minimal">
                             @foreach($newPosts as $new)
                                 <article class="post-minimal">
-                                    <a class="post-minimal-media" href="{{ route('blog.show', ['id' => $new->id]) }}">
+                                    <a class="post-minimal-media" href="{{ route(app()->getLocale() . '.blog.show', ['slug' => $new->getTranslation('slug', app()->getLocale())]) }}">
                                         <img class="post-minimal-image" src="{{ asset($new->image) }}" alt="" width="79" height="78"/>
                                     </a>
                                     <div class="post-minimal-main">
                                         <h6 class="post-minimal-title">
-                                            <a href="{{ route('blog.show', ['id' => $new->id]) }}">{{ $new->title }}</a>
+                                            <a href="{{ route(app()->getLocale() . '.blog.show', ['slug' => $new->getTranslation('slug', app()->getLocale())]) }}">{{ $new->title }}</a>
                                         </h6>
                                         <time class="post-minimal-time" datetime="{{ $new->date->format('Y-m-d') }}">{{ $new->date->format('F d, Y') }}</time>
                                     </div>
