@@ -30,7 +30,7 @@ class IndexController extends Controller
                 'skiInstructors' => SkiInstructor::take(2)->get(),
                 'camps' => Camp::take(3)->get(),
                 'blogs' => BlogPost::with(['categories'])->orderBy('created_at', 'desc')->take(2)->get(),
-                'testimonials' => Testimonial::take(10)->get(),
+                'testimonials' => Testimonial::where('approved_status', true)->take(10)->get(),
                 'popularDestinations' => PopularDestination::active()->ordered()->get(),
                 'whyChooseUs' => WhyChooseUs::active()->ordered()->take(3)->get(),
                 'dividingSection' => DividingSection::active()->first(),
@@ -41,6 +41,14 @@ class IndexController extends Controller
         // Set locale for translatable models
         $data['heroSliders']->each(function ($heroSlider) use ($locale) {
             $heroSlider->setLocale($locale);
+        });
+
+        $data['testimonials']->each(function ($testimonial) use ($locale) {
+            $testimonial->setLocale($locale);
+        });
+
+        $data['skiPrograms']->each(function ($skiProgram) use ($locale) {
+            $skiProgram->setLocale($locale);
         });
 
         return view('index', [

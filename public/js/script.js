@@ -77,7 +77,7 @@
 		};
 
 		scrollHandler();
-		$window.on( 'scroll', scrollHandler );
+		$window.on( 'scroll', scrollHandler, { passive: true } );
 	}
 
 	// Initialize scripts that require a loaded page
@@ -125,7 +125,7 @@
 					};
 
 				$.proxy(initCount, counter)();
-				$window.on("scroll", $.proxy(initCount, counter));
+				$window.on("scroll", $.proxy(initCount, counter), { passive: true });
 			}
 		}
 
@@ -171,7 +171,7 @@
 					};
 
 				$.proxy(initProgress, bar)();
-				$window.on("scroll", $.proxy(initProgress, bar));
+				$window.on("scroll", $.proxy(initProgress, bar), { passive: true });
 			}
 		}
 
@@ -1709,7 +1709,7 @@
 					return function () {
 						transformView(parallaxElement);
 					}
-				})(parallaxElement));
+				})(parallaxElement), { passive: true });
 				transformView(parallaxElement);
 			}
 		}
