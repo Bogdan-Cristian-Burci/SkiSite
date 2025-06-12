@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
                     <!-- Brand -->
                     @if(!empty($company->logo_path))
                         <a class="brand" href="{{ localized_route('home') }}">
-                            <img class="brand-logo" src="{{ Storage::disk('public')->url($company->logo_path) }}" alt="{{ $company->name }}" style="height: 80px;"/>
+                            <img class="brand-logo" src="{{ Storage::disk('public')->url($company->logo_path) }}" alt="{{ $company->name }}" style="max-width: 100px;max-height: 50px;"/>
                         </a>
                     @endif
                     <div class="footer-classic-item-block footer-classic-item-block-1">

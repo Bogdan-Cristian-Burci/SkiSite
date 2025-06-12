@@ -146,9 +146,7 @@
                     <!-- RD Navbar Brand-->
                     <div class="rd-navbar-brand">
                         <a class="brand" href="{{ localized_route('home') }}">
-                            <img class="brand-logo-dark" src="{{ asset('images/logo-default-306x104.png') }}" alt="{{ config('app.name') }}" width="153" height="52"/>
-                            <img class="brand-logo-light" src="{{ asset('images/logo-inverse-306x104.png') }}" alt="{{ config('app.name') }}" width="153" height="52"/>
-                            <img class="brand-logo-white" src="{{ asset('images/logo-white-306x104.png') }}" alt="{{ config('app.name') }}" width="153" height="52"/>
+                            <img class="brand-logo" src="{{ asset('images/logo-default-306x104.png') }}" alt="{{ config('app.name') }}" style="max-width: 100px; max-height: 50px;"/>
                         </a>
                     </div>
                 </div>
