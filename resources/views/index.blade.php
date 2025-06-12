@@ -48,7 +48,7 @@ use Illuminate\Support\Facades\Storage;
                             <div class="col-md-12 col-lg-12">
                                 @include('partials.appointment-form')
                             </div>
-                            @if($company && $company->phone)
+                            @if($company->phone)
                                 <div class="col-md-12 col-lg-12">
                                     <div class="box-call">
                                         <div class="heading-4">{{__('Do you need help')}} ?</div>
@@ -271,15 +271,13 @@ use Illuminate\Support\Facades\Storage;
                             </div>
 
                         @endforeach
-                        @if($company && $company->phone)
-                            <div class="col-sm-6 col-lg-12 wow fadeIn" data-wow-delay=".15s">
-                                <p class="text-accent mt-md-30 mt-xl-50">{{ $company->address }}</p>
-                                <article class="box-inline-1">
-                                    <span class="icon mdi mdi-phone"></span>
-                                    <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>
-                                </article>
-                            </div>
-                            @endif
+                        <div class="col-sm-6 col-lg-12 wow fadeIn" data-wow-delay=".15s">
+                            <p class="text-accent mt-md-30 mt-xl-50">{{ $company->address }}</p>
+                            <article class="box-inline-1">
+                                <span class="icon mdi mdi-phone"></span>
+                                <a href="tel:{{ $company->phone }}">{{ $company->phone }}</a>
+                            </article>
+                        </div>
                     </div>
                 </div>
             </div>
