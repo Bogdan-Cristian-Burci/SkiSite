@@ -67,9 +67,9 @@ Route::group(['middleware' => 'setlocale'], function () {
 // Fallback routes (for backwards compatibility and default English)
 // Ski Programs routes - removed to avoid conflicts with language switching
 
-// Blog Posts routes
-Route::get('/blog', [BlogPostController::class, 'webIndex'])->name('blog.fallback');
-Route::get('/blog/{slug}', [BlogPostController::class, 'webShow'])->name('blog.show.fallback');
+// Blog Posts routes - commented out to avoid conflicts with Romanian routes
+// Route::get('/blog', [BlogPostController::class, 'webIndex'])->name('blog.fallback');
+// Route::get('/blog/{slug}', [BlogPostController::class, 'webShow'])->name('blog.show.fallback');
 
 // Ski Instructors/Team routes
 Route::get('/team', [SkiInstructorController::class, 'webIndex'])->name('team.fallback');

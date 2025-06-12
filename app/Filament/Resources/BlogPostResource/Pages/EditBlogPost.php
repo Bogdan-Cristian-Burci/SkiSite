@@ -15,7 +15,7 @@ class EditBlogPost extends EditRecord
         return [
             Actions\ViewAction::make()
                 ->label('View on Site')
-                ->url(fn (): string => route('blog.show.fallback', $this->record->getTranslation('slug', app()->getLocale())))
+                ->url(fn (): string => localized_route('blog.show', $this->record->getTranslation('slug', app()->getLocale())))
                 ->openUrlInNewTab(),
             Actions\DeleteAction::make(),
             Actions\RestoreAction::make(),

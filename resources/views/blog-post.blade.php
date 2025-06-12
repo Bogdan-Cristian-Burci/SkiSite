@@ -35,13 +35,18 @@ use Illuminate\Support\Facades\Storage;
                             <div class="w-full">{!! $blogPost->content !!}</div>
 
                             {{-- Gallery --}}
-                            @if($blogPost->gallery)
-                                <div class="post-corporate-gallery" data-lightgallery="group">
-                                    @foreach($blogPost->gallery as $image)
-                                        <a class="post-corporate-thumbnail" href="{{ Storage::disk('public')->url($image->image_path) }}" data-lightgallery="item">
-                                            <img class="post-corporate-thumbnail-image" src="{{ Storage::disk('public')->url($image->image_path) }}" alt=""/>
-                                        </a>
-                                    @endforeach
+                            @if($blogPost->galery && count($blogPost->galery) > 0)
+                                <div class="mt-4 mb-4">
+                                    <h4 class="mb-3">{{ __('Gallery') }}</h4>
+                                    <div class="row row-20" data-lightgallery="group">
+                                        @foreach($blogPost->galery as $imagePath)
+                                            <div class="col-md-4 col-sm-6 mb-3">
+                                                <a class="gallery-item" href="{{ Storage::disk('public')->url($imagePath) }}" data-lightgallery="item">
+                                                    <img class="img-fluid rounded" src="{{ Storage::disk('public')->url($imagePath) }}" alt="Gallery Image" style="height: 200px; object-fit: cover; width: 100%;"/>
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             @endif
                             <div class="post-corporate-divider"></div>
@@ -64,25 +69,27 @@ use Illuminate\Support\Facades\Storage;
                         </article>
                     </div>
                     {{-- Related Posts --}}
+                    @if($relatedPosts->count() > 0)
                     <div class="blog-layout-main-item">
                         <h3>{{ __('Related Posts') }}</h3>
                         <div class="row row-40">
                             @foreach($relatedPosts as $related)
                                 <div class="col-sm-6">
                                     <article class="post-classic ml-0">
-                                        <a class="post-classic-figure" href="{{ route('blog.show', ['id' => $related->id]) }}">
-                                            <img class="post-classic-image" src="{{ asset($related->image) }}" alt="" width="339" height="251"/>
+                                        <a class="post-classic-figure" href="{{ localized_route('blog.show', $related->getTranslation('slug', app()->getLocale())) }}">
+                                            <img class="post-classic-image" src="{{ Storage::disk('public')->url($related->image_path) }}" alt="" width="339" height="251"/>
                                         </a>
-                                        <time class="post-classic-time" datetime="{{ $related->date->format('Y-m-d') }}">{{ $related->date->format('F d, Y') }}</time>
+                                        <time class="post-classic-time" datetime="{{ $related->created_at->format('Y-m-d') }}">{{ $related->created_at->format('F d, Y') }}</time>
                                         <div class="post-classic-divider"></div>
                                         <p class="heading-4 post-classic-title">
-                                            <a href="{{ route('blog.show', ['id' => $related->id]) }}">{{ $related->title }}</a>
+                                            <a href="{{ localized_route('blog.show', $related->getTranslation('slug', app()->getLocale())) }}">{{ $related->title }}</a>
                                         </p>
                                     </article>
                                 </div>
                             @endforeach
                         </div>
                     </div>
+                    @endif
                     {{-- Comments Section --}}
                     @if($comments->count() > 0)
                     <div class="blog-layout-main-item">
@@ -164,34 +171,21 @@ use Illuminate\Support\Facades\Storage;
 {{--                            </div>--}}
 {{--                        </form>--}}
 {{--                    </div>--}}
-                    {{-- Categories --}}
-                    <div class="blog-layout-aside-item">
-                        <h4>{{ __('Categories') }}</h4>
-                        <ul class="list-categories">
-                            @foreach($categories as $category)
-                                <li>
-                                    <a href="#">
-                                        <span class="lc-text">{{ $category->name }}</span>
-                                        <span class="lc-counter">{{ $category->count }}</span>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+
                     {{-- New Posts --}}
                     <div class="blog-layout-aside-item">
                         <h4>{{ __('New Posts') }}</h4>
                         <div class="group-post-minimal">
                             @foreach($newPosts as $new)
                                 <article class="post-minimal">
-                                    <a class="post-minimal-media" href="{{ route('blog.show', ['id' => $new->id]) }}">
-                                        <img class="post-minimal-image" src="{{ asset($new->image) }}" alt="" width="79" height="78"/>
+                                    <a class="post-minimal-media" href="{{ localized_route('blog.show', $new->getTranslation('slug', app()->getLocale())) }}">
+                                        <img class="post-minimal-image" src="{{ Storage::disk('public')->url($new->image_path) }}" alt="" width="79" height="78"/>
                                     </a>
                                     <div class="post-minimal-main">
                                         <h6 class="post-minimal-title">
-                                            <a href="{{ route('blog.show', ['id' => $new->id]) }}">{{ $new->title }}</a>
+                                            <a href="{{ localized_route('blog.show', $new->getTranslation('slug', app()->getLocale())) }}">{{ $new->title }}</a>
                                         </h6>
-                                        <time class="post-minimal-time" datetime="{{ $new->date->format('Y-m-d') }}">{{ $new->date->format('F d, Y') }}</time>
+                                        <time class="post-minimal-time" datetime="{{ $new->created_at->format('Y-m-d') }}">{{ $new->created_at->format('F d, Y') }}</time>
                                     </div>
                                 </article>
                             @endforeach

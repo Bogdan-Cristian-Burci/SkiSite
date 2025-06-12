@@ -98,8 +98,8 @@ class BlogPostController extends Controller
 
     public function webIndex()
     {
-        $blogPosts = BlogPost::with(['categories', 'user'])->latest()->get();
-        return view('blogs', compact('blogPosts'));
+        $news = BlogPost::with(['categories', 'user'])->latest()->paginate(10);
+        return view('blogs', compact('news'));
     }
 
     public function webShow($slug)

@@ -203,7 +203,7 @@ class BlogPostResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
-                        ->url(fn (BlogPost $record): string => route('blog.show.fallback', $record->getTranslation('slug', app()->getLocale())))
+                        ->url(fn (BlogPost $record): string => localized_route('blog.show', $record->getTranslation('slug', app()->getLocale())))
                         ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),

@@ -28,13 +28,13 @@
                     @foreach($news as $post)
                         <article class="tour-modern mt-30 mt-xl-60 wow fadeIn" data-wow-delay=".05s">
                             <div class="tour-modern-media">
-                                <a class="tour-modern-figure" href="{{ route('blog.show', ['id' => $post->id]) }}">
+                                <a class="tour-modern-figure" href="{{ localized_route('blog.show', $post->getTranslation('slug', app()->getLocale())) }}">
                                     <img class="tour-modern-image" src="{{ asset($post->image) }}" alt="" width="358" height="450"/>
                                 </a>
                             </div>
                             <div class="tour-modern-main">
                                 <h4 class="tour-modern-title">
-                                    <a href="{{ route('blog.show', ['id' => $post->id]) }}">{{ $post->title }}</a>
+                                    <a href="{{ localized_route('blog.show', $post->getTranslation('slug', app()->getLocale())) }}">{{ $post->title }}</a>
                                 </h4>
                                 <div class="tour-modern-info">
                                     <p class="tour-modern-tag">{{ $post->category }}</p>
