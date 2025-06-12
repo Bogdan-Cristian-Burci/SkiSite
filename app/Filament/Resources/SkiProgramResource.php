@@ -49,10 +49,16 @@ class SkiProgramResource extends Resource
                     ->schema([
                         Forms\Components\Textarea::make('description.en')
                             ->label('Description (English)')
-                            ->required(),
+                            ->required()
+                            ->maxLength(5000)
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => 'Characters: ' . mb_strlen($state ?? '') . '/5000'),
                         Forms\Components\Textarea::make('description.ro')
                             ->label('Description (Romanian)')
-                            ->required(),
+                            ->required()
+                            ->maxLength(5000)
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => 'Characters: ' . mb_strlen($state ?? '') . '/5000'),
                     ]),
                 Forms\Components\Grid::make(2)
                     ->schema([

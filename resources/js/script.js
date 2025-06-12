@@ -1745,11 +1745,13 @@
 			}
 		}
 
-		// Slick carousel
-		if (plugins.slick.length) {
-			for (var i = 0; i < plugins.slick.length; i++) {
-				var $slickItem = $(plugins.slick[i]);
+		// Slick carousel with enhanced initialization
+		function initSlickSlider($slickItem) {
+			if ($slickItem.hasClass('slick-initialized')) {
+				return;
+			}
 
+			try {
 				$slickItem.on('init', function (slick) {
 					initLightGallery($('[data-lightgallery="group-slick"]'), 'lightGallery-in-carousel');
 					initLightGallery($('[data-lightgallery="item-slick"]'), 'lightGallery-in-carousel');
@@ -1811,8 +1813,47 @@
 							$(childCarousel + ' .slick-slide').eq(currentSlide).addClass('slick-current');
 						}
 					});
-
+			} catch (error) {
+				console.error('Slick slider initialization failed:', error);
+				setTimeout(function() {
+					initSlickSlider($slickItem);
+				}, 500);
 			}
 		}
+
+		function initAllSlickSliders() {
+			if (plugins.slick.length) {
+				for (var i = 0; i < plugins.slick.length; i++) {
+					var $slickItem = $(plugins.slick[i]);
+					initSlickSlider($slickItem);
+				}
+			}
+		}
+
+		initAllSlickSliders();
+
+		// Fallback initialization for production environments
+		$window.on('load', function() {
+			setTimeout(function() {
+				var uninitializedSliders = $('.slick-slider:not(.slick-initialized)');
+				if (uninitializedSliders.length > 0) {
+					console.log('Re-initializing ' + uninitializedSliders.length + ' Slick sliders after window load');
+					uninitializedSliders.each(function() {
+						initSlickSlider($(this));
+					});
+				}
+			}, 100);
+		});
+
+		// Additional fallback for very slow connections
+		setTimeout(function() {
+			var uninitializedSliders = $('.slick-slider:not(.slick-initialized)');
+			if (uninitializedSliders.length > 0) {
+				console.log('Late re-initialization of ' + uninitializedSliders.length + ' Slick sliders');
+				uninitializedSliders.each(function() {
+					initSlickSlider($(this));
+				});
+			}
+		}, 2000);
 	});
 }());

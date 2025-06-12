@@ -265,6 +265,9 @@ use Illuminate\Support\Facades\Storage;
                         <li class="rd-nav-item {{ Request::routeIs('webcams') ? 'active' : '' }}">
                             <a class="rd-nav-link" href="{{ localized_route('webcams') }}">{{__('Webcams')}}</a>
                         </li>
+                        <li class="rd-nav-item {{ Request::routeIs('blog') ? 'active' : '' }}">
+                            <a class="rd-nav-link" href="{{ localized_route('blog') }}">{{__('Blog')}}</a>
+                        </li>
                         <li class="rd-nav-item {{ Request::routeIs('contact') ? 'active' : '' }}">
                             <a class="rd-nav-link" href="{{ localized_route('contact') }}">{{__('Contact Us')}}</a>
                         </li>

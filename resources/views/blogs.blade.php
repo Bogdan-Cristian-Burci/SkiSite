@@ -1,4 +1,7 @@
 {{-- resources/views/blogs.blade.php --}}
+@php
+    use Illuminate\Support\Facades\Storage;
+@endphp
 @extends('layouts.app')
 
 @section('title', __('News'))
@@ -8,20 +11,11 @@
 @endsection
 
 @section('content')
-    <section class="breadcrumbs-custom">
-        <div class="container">
-            <div class="breadcrumbs-custom-main">
-                <h2 class="breadcrumbs-custom-title">{{ __('News') }}</h2>
-                <p>{{ __('Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Duis aute irure dolor in reprehenderit.') }}</p>
-            </div>
-        </div>
-    </section>
-
     <section class="section section-md bg-gray-100">
         <div class="container">
             <div class="row row-30 row-xl-50 flex-lg-row-reverse">
                 <div class="col-lg-4">
-                    @include('partials.contact-form')
+                    @include('partials.contact-form', ['layout' => 'compact', 'showSubject'=>false])
                 </div>
                 <div class="col-lg-8">
                     {{-- Loop through news posts --}}
@@ -29,7 +23,7 @@
                         <article class="tour-modern mt-30 mt-xl-60 wow fadeIn" data-wow-delay=".05s">
                             <div class="tour-modern-media">
                                 <a class="tour-modern-figure" href="{{ localized_route('blog.show', $post->getTranslation('slug', app()->getLocale())) }}">
-                                    <img class="tour-modern-image" src="{{ asset($post->image) }}" alt="" width="358" height="450"/>
+                                    <img class="tour-modern-image" src="{{ Storage::disk('public')->url($post->image_path) }}" alt="" width="358" height="450"/>
                                 </a>
                             </div>
                             <div class="tour-modern-main">
@@ -37,9 +31,9 @@
                                     <a href="{{ localized_route('blog.show', $post->getTranslation('slug', app()->getLocale())) }}">{{ $post->title }}</a>
                                 </h4>
                                 <div class="tour-modern-info">
-                                    <p class="tour-modern-tag">{{ $post->category }}</p>
+                                    <p class="tour-modern-tag">{{ $post->categories->name }}</p>
                                 </div>
-                                <p>{{ $post->excerpt }}</p>
+                                <p>{{ $post->subtitle }}</p>
                             </div>
                         </article>
                     @endforeach

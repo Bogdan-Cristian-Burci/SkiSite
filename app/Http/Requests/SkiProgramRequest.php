@@ -14,7 +14,7 @@ class SkiProgramRequest extends FormRequest
             'title' => ['required', 'array'],
             'title.*' => ['required', 'string', 'max:255'],
             'description' => ['required', 'array'],
-            'description.*' => ['required', 'string'],
+            'description.*' => ['required', 'string', 'max:5000'],
             'price_label' => ['required', 'array'],
             'price_label.*' => ['required', 'string', 'max:100'],
             'details' => ['nullable', 'array'],
@@ -26,7 +26,7 @@ class SkiProgramRequest extends FormRequest
             'slug' => ['required', 'array'],
             'slug.*' => ['required', 'string', 'max:255'],
             'price' => ['nullable', 'numeric', 'min:0'],
-            'image' => [$isUpdate ? 'nullable' : 'required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'image_path' => [$isUpdate ? 'nullable' : 'required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'gallery' => ['nullable', 'array'],
             'gallery.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
