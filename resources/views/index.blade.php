@@ -356,6 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .camp-card {
             position: relative;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #EEF3F9;
         }
 
         .camp-card:hover {

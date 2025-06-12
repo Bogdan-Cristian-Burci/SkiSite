@@ -10,7 +10,7 @@
             <div class="row row-10 text-center justify-content-center">
                 <div class="d-inline-block " style="min-width:300px;">
                     <div class="form-wrap form-wrap-icon wow fadeIn" data-wow-delay=".05s">
-                        <input class="form-input form-label-outside"
+                        <input class="form-input form-label-outside text-center"
                                id="daterange"
                                type="text"
                                name="date_range"
@@ -22,7 +22,7 @@
 
                 <div class="d-inline-block " style="min-width:300px;">
                     <div class="form-wrap form-wrap-icon wow fadeIn position-relative" data-wow-delay=".1s">
-                        <input class="form-input form-label-outside"
+                        <input class="form-input form-label-outside text-center"
                                id="appointment-summary"
                                type="text"
                                value="1 .{{__("Adults")}}. - 0 .{{__("Children")}}. - 1 .{{__("Hours")}}"

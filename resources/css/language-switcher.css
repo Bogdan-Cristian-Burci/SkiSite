@@ -41,7 +41,7 @@
     }
 }
 
-@media (min-width: 768px) and (max-width: 1199px) {
+@media (min-width: 768px) and (max-width: 991px) {
     /* Tablet: Show mobile version */
     .navbar-lang-mobile {
         display: flex !important;
@@ -54,7 +54,7 @@
 }
 
 @media (min-width: 1200px) {
-    /* Desktop: Show desktop version, hide mobile */
+    /* Medium desktop and above: Show desktop version, hide mobile */
     .navbar-lang-mobile {
         display: none !important;
     }
