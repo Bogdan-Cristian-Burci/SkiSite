@@ -262,7 +262,7 @@ use Illuminate\Support\Facades\Storage;
                             <div class="col-sm-6 col-lg-12 wow fadeIn" data-wow-delay="{{ $loop->index * 0.05 }}s">
                                 <!-- Profile Light-->
                                 <article class="profile-light">
-                                    <img  src="{{ Storage::disk('public')->url($skiInstructor->image_path) }}" alt="{{$skiInstructor->user->name}}" style="width:95px;height:95px;border: 3px solid lightblue;object-fit:cover;border-radius:50%;"/>
+                                    <img class="profile-light-image" src="{{ Storage::disk('public')->url($skiInstructor->image_path) }}" alt="{{$skiInstructor->user->name}}" style="width:95px;height:95px;border: 3px solid lightblue;object-fit:cover"/>
                                     <div class="profile-light-main">
                                         <p class="profile-light-position">{{ $skiInstructor->position }}</p>
                                         <h5 class="profile-light-name">{{ $skiInstructor->user->name }}</h5>

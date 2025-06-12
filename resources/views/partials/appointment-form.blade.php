@@ -1,13 +1,13 @@
 @if(auth()->check())
     <!-- Appointment Form for Logged In Users -->
     <div class="appointment-form-container">
-        <h4 class="wow fadeIn font-weight-regular text-center">{{__("Make an appointment")}}</h4>
+        <h4 class="wow fadeIn font-weight-regular">{{__("Make an appointment")}}</h4>
 
         <form id="appointmentForm" class="rd-form rd-mailform form-lg" method="POST" action="{{ route('appointments.store.fallback') }}">
             @csrf
 
             <!-- Date Range and Selection Row -->
-            <div class="row row-10 text-center justify-content-center">
+            <div class="row row-10 text-center">
                 <div class="d-inline-block ">
                     <div class="form-wrap form-wrap-icon wow fadeIn" data-wow-delay=".05s">
                         <input class="form-input form-label-outside"
@@ -79,7 +79,7 @@
             <input type="hidden" id="appointment-children" name="number_of_children" value="0" />
             <input type="hidden" id="appointment-hours" name="hours_per_day" value="1" />
 
-            <div class="form-element wow fadeIn justify-content-center" data-wow-delay=".3s">
+            <div class="form-element wow fadeIn" data-wow-delay=".3s">
                 <button class="button button-lg button-primary btn-lg" type="submit">{{__("Book Appointment")}}</button>
             </div>
         </form>
