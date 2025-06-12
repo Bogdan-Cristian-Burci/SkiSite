@@ -287,6 +287,57 @@ use Illuminate\Support\Facades\Storage;
 
 @push('scripts')
 <script>
+// Slick Slider initialization
+$(document).ready(function() {
+    $('.slick-slider').each(function() {
+        var $this = $(this);
+        var settings = {
+            infinite: $this.data('loop') || false,
+            autoplay: $this.data('autoplay') || false,
+            dots: $this.data('dots') || false,
+            swipeToSlide: $this.data('swipe') || false,
+            slidesToShow: $this.data('items') || 1,
+            slidesToScroll: 1,
+            centerMode: $this.data('center-mode') || false,
+            speed: $this.data('speed') || 300,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: {
+                        slidesToShow: $this.data('xl-items') || $this.data('items') || 1
+                    }
+                },
+                {
+                    breakpoint: 992,
+                    settings: {
+                        slidesToShow: $this.data('lg-items') || $this.data('items') || 1
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: $this.data('md-items') || $this.data('items') || 1
+                    }
+                },
+                {
+                    breakpoint: 576,
+                    settings: {
+                        slidesToShow: $this.data('sm-items') || $this.data('items') || 1
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: $this.data('xs-items') || $this.data('items') || 1
+                    }
+                }
+            ]
+        };
+        
+        $this.slick(settings);
+    });
+});
+
 // Swiper fallback initialization
 document.addEventListener('DOMContentLoaded', function() {
     // Function to set background images for slides
