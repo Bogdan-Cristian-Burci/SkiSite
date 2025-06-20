@@ -352,6 +352,22 @@ document.addEventListener('DOMContentLoaded', function() {
         .ie-panel{display: none;background: #212121;padding: 10px 0;box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);clear: both;text-align:center;position: relative;z-index: 1;}
         html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {display: block;}
 
+        /* Fix slick slider visibility issues */
+        .slick-slider .slick-slide {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .slick-slider .slick-slide.slick-active {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        .slick-slider .slick-slide.slick-current {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
         /* Camp Cards Styles */
         .camp-card {
             position: relative;
