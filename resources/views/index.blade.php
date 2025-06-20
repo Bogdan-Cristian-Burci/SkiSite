@@ -289,66 +289,88 @@ use Illuminate\Support\Facades\Storage;
 <script>
 // Slick Slider initialization
 $(document).ready(function() {
-    // Check if slick is available
-    if (typeof $.fn.slick !== 'undefined') {
-        $('.slick-slider').each(function() {
-            var $this = $(this);
-            
-            // Only initialize if the element exists and has children
-            if ($this.length && $this.children().length > 0) {
-                try {
-                    var settings = {
-                        infinite: $this.data('loop') || false,
-                        autoplay: $this.data('autoplay') || false,
-                        dots: $this.data('dots') || false,
-                        swipeToSlide: $this.data('swipe') || false,
-                        slidesToShow: $this.data('items') || 1,
-                        slidesToScroll: 1,
-                        centerMode: $this.data('center-mode') || false,
-                        speed: $this.data('speed') || 300,
-                        responsive: [
-                            {
-                                breakpoint: 1200,
-                                settings: {
-                                    slidesToShow: $this.data('xl-items') || $this.data('items') || 1
-                                }
-                            },
-                            {
-                                breakpoint: 992,
-                                settings: {
-                                    slidesToShow: $this.data('lg-items') || $this.data('items') || 1
-                                }
-                            },
-                            {
-                                breakpoint: 768,
-                                settings: {
-                                    slidesToShow: $this.data('md-items') || $this.data('items') || 1
-                                }
-                            },
-                            {
-                                breakpoint: 576,
-                                settings: {
-                                    slidesToShow: $this.data('sm-items') || $this.data('items') || 1
-                                }
-                            },
-                            {
-                                breakpoint: 480,
-                                settings: {
-                                    slidesToShow: $this.data('xs-items') || $this.data('items') || 1
-                                }
-                            }
-                        ]
-                    };
-                    
-                    $this.slick(settings);
-                } catch (error) {
-                    console.warn('Failed to initialize slick slider:', error);
+    // Wait for all content to be loaded
+    setTimeout(function() {
+        // Check if slick is available
+        if (typeof $.fn.slick !== 'undefined') {
+            $('.slick-slider').each(function() {
+                var $this = $(this);
+                
+                // Only initialize if the element exists, has children, and is visible
+                if ($this.length && $this.children('.item').length > 0 && $this.is(':visible')) {
+                    try {
+                        // Ensure slides are properly structured
+                        if (!$this.hasClass('slick-initialized')) {
+                            var settings = {
+                                infinite: $this.data('loop') || false,
+                                autoplay: $this.data('autoplay') || false,
+                                autoplaySpeed: 3000,
+                                dots: $this.data('dots') || false,
+                                swipeToSlide: $this.data('swipe') || false,
+                                slidesToShow: $this.data('items') || 1,
+                                slidesToScroll: 1,
+                                centerMode: $this.data('center-mode') || false,
+                                centerPadding: '60px',
+                                speed: $this.data('speed') || 300,
+                                adaptiveHeight: true,
+                                accessibility: true,
+                                arrows: false,
+                                responsive: [
+                                    {
+                                        breakpoint: 1200,
+                                        settings: {
+                                            slidesToShow: $this.data('xl-items') || $this.data('items') || 1,
+                                            centerPadding: '40px'
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 992,
+                                        settings: {
+                                            slidesToShow: $this.data('lg-items') || $this.data('items') || 1,
+                                            centerPadding: '40px'
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 768,
+                                        settings: {
+                                            slidesToShow: $this.data('md-items') || 1,
+                                            centerPadding: '20px'
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 576,
+                                        settings: {
+                                            slidesToShow: $this.data('sm-items') || 1,
+                                            centerPadding: '20px'
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 480,
+                                        settings: {
+                                            slidesToShow: $this.data('xs-items') || 1,
+                                            centerPadding: '10px'
+                                        }
+                                    }
+                                ]
+                            };
+                            
+                            $this.slick(settings);
+                        }
+                    } catch (error) {
+                        console.warn('Failed to initialize slick slider:', error);
+                    }
+                } else {
+                    console.warn('Slick slider element not ready:', {
+                        exists: $this.length > 0,
+                        hasChildren: $this.children('.item').length > 0,
+                        isVisible: $this.is(':visible')
+                    });
                 }
-            }
-        });
-    } else {
-        console.warn('Slick carousel library not found');
-    }
+            });
+        } else {
+            console.warn('Slick carousel library not found');
+        }
+    }, 500); // Wait 500ms for DOM to be fully ready
 });
 
 // Swiper fallback initialization
