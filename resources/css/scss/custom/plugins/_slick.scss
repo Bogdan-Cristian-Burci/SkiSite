@@ -353,18 +353,15 @@ $slick-opacity-not-active: 0.25 !default;
 		// 1, 3
 		.slick-slide:not(.slick-center) {
 			transform: scale(.91);
-			z-index: 1;
 		}
 
 		// 1
-		.slick-active:not(.slick-center) { 
-			z-index: 1;
-		}
+		.slick-active:not(.slick-center) { }
 
 		// 2
 		.slick-center {
 			align-items: center;
-			z-index: 3;
+			z-index: 2;
 			transition: .3s;
 
 			> * {
