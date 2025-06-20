@@ -287,62 +287,7 @@ use Illuminate\Support\Facades\Storage;
 
 @push('scripts')
 <script>
-// Swiper fallback initialization
-document.addEventListener('DOMContentLoaded', function() {
-    // Function to set background images for slides
-    function setSlideBackgrounds() {
-        var slides = document.querySelectorAll('.swiper-slide[data-slide-bg]');
-        slides.forEach(function(slide) {
-            var bgUrl = slide.getAttribute('data-slide-bg');
-            if (bgUrl) {
-                slide.style.backgroundImage = 'url(' + bgUrl + ')';
-                slide.style.backgroundSize = 'cover';
-                slide.style.backgroundPosition = 'center';
-                slide.style.backgroundRepeat = 'no-repeat';
-            }
-        });
-    }
 
-    // Set backgrounds immediately
-    setSlideBackgrounds();
-
-    // Wait for main script to initialize
-    setTimeout(function() {
-        var swiperContainer = document.querySelector('.swiper-container');
-
-        if (swiperContainer && typeof Swiper !== 'undefined') {
-            // Check if swiper is already initialized by the main script
-            if (!swiperContainer.swiper) {
-                // Use the HTML attributes to match original script behavior
-                var container = swiperContainer;
-                var swiper = new Swiper(container, {
-                    loop: container.getAttribute('data-loop') === 'true',
-                    effect: container.getAttribute('data-slide-effect') || 'fade',
-                    autoplay: container.getAttribute('data-autoplay') ? {
-                        delay: parseInt(container.getAttribute('data-autoplay')),
-                        disableOnInteraction: container.getAttribute('data-simulate-touch') !== 'false',
-                    } : false,
-                    navigation: container.getAttribute('data-nav') === 'true' ? {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    } : false,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    simulateTouch: container.getAttribute('data-simulate-touch') === 'true',
-                    on: {
-                        init: function() {
-                            setSlideBackgrounds();
-                        }
-                    }
-                });
-            } else {
-                setSlideBackgrounds();
-            }
-        }
-    }, 2000);
-});
 </script>
 @endpush
 
@@ -352,21 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .ie-panel{display: none;background: #212121;padding: 10px 0;box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);clear: both;text-align:center;position: relative;z-index: 1;}
         html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {display: block;}
 
-        /* Fix slick slider visibility issues */
-        .slick-slider .slick-slide {
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-        
-        .slick-slider .slick-slide.slick-active {
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-        
-        .slick-slider .slick-slide.slick-current {
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
 
         /* Camp Cards Styles */
         .camp-card {
