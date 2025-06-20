@@ -216,7 +216,7 @@ use Illuminate\Support\Facades\Storage;
             <h3 class="ls-02 wow fadeIn">{{__('What Our Clients Say')}}</h3>
             <p class="block-9 text-gray-500 wow fadeIn" data-wow-delay=".025s">{{__('What Our Clients Say content')}}.</p>
             <!-- Testimonials slider -->
-            <div class="slick-slider slick-slider-1" data-loop="true" data-autoplay="true" data-dots="true" data-swipe="true" data-items="1" data-xs-items="1" data-sm-items="1" data-md-items="3" data-lg-items="3" data-xl-items="3" data-center-mode="true" data-speed="600">
+            <div class="slick-slider slick-slider-1" data-loop="true" data-autoplay="true" data-dots="true" data-swipe="true" data-items="1" data-xs-items="1" data-sm-items="1" data-md-items="3" data-lg-items="3" data-xl-items="3" data-center-mode="true" data-speed="600" data-has-items="{{$testimonials->count()}}">
                 <!-- Testimonial items -->
                 @foreach($testimonials as $testimonial)
                     <div class="item">
@@ -296,8 +296,12 @@ $(document).ready(function() {
             $('.slick-slider').each(function() {
                 var $this = $(this);
                 
+                // Check if element has data indicating it should have items
+                var expectedItems = parseInt($this.data('has-items')) || 0;
+                var actualItems = $this.children('.item').length;
+                
                 // Only initialize if the element exists, has children, and is visible
-                if ($this.length && $this.children('.item').length > 0 && $this.is(':visible')) {
+                if ($this.length && actualItems > 0 && $this.is(':visible') && expectedItems > 0) {
                     try {
                         // Ensure slides are properly structured
                         if (!$this.hasClass('slick-initialized')) {
@@ -360,11 +364,16 @@ $(document).ready(function() {
                         console.warn('Failed to initialize slick slider:', error);
                     }
                 } else {
-                    console.warn('Slick slider element not ready:', {
-                        exists: $this.length > 0,
-                        hasChildren: $this.children('.item').length > 0,
-                        isVisible: $this.is(':visible')
-                    });
+                    // Only log warning if it's unexpected (not when testimonials section is empty)
+                    if (expectedItems > 0 || actualItems > 0) {
+                        console.warn('Slick slider element not ready:', {
+                            exists: $this.length > 0,
+                            hasChildren: actualItems > 0,
+                            isVisible: $this.is(':visible'),
+                            expectedItems: expectedItems,
+                            actualItems: actualItems
+                        });
+                    }
                 }
             });
         } else {
